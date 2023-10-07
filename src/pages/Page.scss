@@ -1,0 +1,101 @@
+.wrap__not-found {
+    background: #ffbc01;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .img__not-found {
+        width: 30%;
+    }
+}
+.register__wrap {
+    display: flex;
+    align-items: center;
+    background-color: #e6f1ff;
+    justify-content: center;
+    height: 100vh;
+    .register__form {
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        padding: 50px;
+        border: 1px solid #d3d6db;
+        border-radius: 8px;
+        background-color: #fff;
+        width: 30%;
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    }
+}
+.wrap__login {
+    display: flex;
+    align-items: center;
+    background-color: #e6f1ff;
+    justify-content: center;
+    height: 100vh;
+    .form__login {
+        height: 400px;
+        padding: 50px;
+        border: 1px solid #d3d6db;
+        border-radius: 8px;
+        background-color: #fff;
+        width: 30%;
+    }
+    .login__suggest {
+        display: flex;
+        gap: 5px;
+    }
+}
+.wrapper__app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.header__wrap {
+    display: flex;
+    align-items: center;
+    height: 95px;
+    background-color: var(--header_white);
+    width: 100%;
+    .logo__tiki {
+        width: 75px;
+    }
+}
+.wrap__search {
+    position: relative;
+    // width: 815px;
+    width: 500px;
+
+    height: 40px;
+    border: 1px solid var(--border__input);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+
+    .icon__search {
+        position: absolute;
+        border-left: 1px solid var(--border__input);
+        top: 7px;
+        right: 0px;
+        padding: 0 12px;
+        cursor: pointer;
+        font-size: 25px;
+        color: var(--border__input);
+        &:hover {
+            color: blue;
+        }
+    }
+}
+.input__search {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-style: none;
+}
