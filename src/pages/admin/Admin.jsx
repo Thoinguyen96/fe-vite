@@ -1,12 +1,5 @@
-import LogOut from "../logout/LogOut";
-
 function Admin() {
-    return (
-        <div className="admin__wrap">
-            admin
-            <LogOut />
-        </div>
-    );
+    return <div className="admin__wrap">admin</div>;
 }
 
 export default Admin;

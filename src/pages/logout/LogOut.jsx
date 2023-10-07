@@ -10,7 +10,7 @@ function LogOut() {
     };
     return (
         <>
-            <button onClick={handleLogout}>Logout</button>
+            <div onClick={handleLogout}>Đăng xuất</div>
         </>
     );
 }

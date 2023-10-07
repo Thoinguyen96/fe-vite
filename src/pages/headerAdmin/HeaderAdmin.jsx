@@ -5,7 +5,7 @@ import { Button, Drawer, Radio, Space, Dropdown } from "antd";
 import { Badge } from "antd";
 import { useState } from "react";
 import LogOut from "../logout/LogOut";
-function Header() {
+function HeaderAdmin() {
     const items = [
         {
             label: <a href="https://www.antgroup.com">Thông tin tài khoản</a>,
@@ -18,20 +18,10 @@ function Header() {
     ];
     const [open, setOpen] = useState(false);
     return (
-        <div className="header__wrap">
+        <div className="headerAdmin__wrap">
             <MenuFoldOutlined onClick={() => setOpen(true)} />
             <img className="logo__tiki" src={logoTiki} alt="logoTIKI.png" />
-            <Search />
             <div className="wrap__icon-header">
-                <div className="gap__icon">
-                    <HomeOutlined
-                        style={{
-                            color: "#1677ff",
-                        }}
-                    />
-                    <span>Trang chủ</span>
-                </div>
-
                 <Dropdown arrow={false} menu={{ items }}>
                     <a onClick={(e) => e.preventDefault()}>
                         <Space>
@@ -47,19 +37,9 @@ function Header() {
                         </Space>
                     </a>
                 </Dropdown>
-                <div>
-                    <Badge count={5} size="small">
-                        <ShoppingCartOutlined
-                            style={{
-                                color: "#1677ff",
-                                fontSize: "20px",
-                            }}
-                        />
-                    </Badge>
-                </div>
             </div>
         </div>
     );
 }
 
-export default Header;
+export default HeaderAdmin;

@@ -12,6 +12,7 @@ import Loading from "./pages/loading/Loading";
 import { doFetchUser } from "./redux/account/userSlice";
 import Admin from "./pages/admin/Admin";
 import Authorization from "./layout/drumLayout/Authorization";
+import LayoutAdmin from "./layout/layoutAdmin/LayoutAdmin";
 export default function App() {
     const isAuthentication = useSelector((state) => state.account.authentically);
     const isLoading = useSelector((state) => state.account.isLoading);
@@ -48,8 +49,8 @@ export default function App() {
             ],
         },
         {
-            path: "/admin",
-            element: <DefaultLayout />,
+            path: "admin",
+            element: <LayoutAdmin />,
             errorElement: <NotFound />,
             children: [
                 {

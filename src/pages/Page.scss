@@ -59,18 +59,29 @@
 .header__wrap {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 95px;
     background-color: var(--header_white);
     width: 100%;
     .logo__tiki {
         width: 75px;
     }
+    .wrap__icon-header {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        .gap__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+    }
 }
 .wrap__search {
     position: relative;
-    // width: 815px;
-    width: 500px;
-
+    width: 815px;
+    padding: 0 10px;
     height: 40px;
     border: 1px solid var(--border__input);
     border-radius: 8px;
@@ -98,4 +109,17 @@
     outline: none;
     border: none;
     border-style: none;
+}
+.headerAdmin__wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 95px;
+    background-color: var(--header_white);
+    width: 100%;
+    border: 1px solid var(--border__input);
+
+    .logo__tiki {
+        width: 75px;
+    }
 }
