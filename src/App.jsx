@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Contact from "./pages/contact/Contact";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
@@ -8,14 +8,15 @@ import DefaultLayout from "./layout/defaultLayout/DefaultLayout";
 import NotFound from "./pages/notFound/NotFound";
 import { callCountUser } from "./services/ApiServices";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "./pages/loading/Loading";
+// import Loading from "./pages/loading/Loading";
 import { doFetchUser } from "./redux/account/userSlice";
 import Admin from "./pages/admin/Admin";
 import Authorization from "./layout/drumLayout/Authorization";
 import LayoutAdmin from "./layout/layoutAdmin/LayoutAdmin";
+import User from "./pages/admin/user/User";
 export default function App() {
     const isAuthentication = useSelector((state) => state.account.authentically);
-    const isLoading = useSelector((state) => state.account.isLoading);
+    // const isLoading = useSelector((state) => state.account.isLoading);
 
     console.log(isAuthentication);
     const disPatch = useDispatch();
@@ -61,6 +62,10 @@ export default function App() {
                         </Authorization>
                     ),
                 },
+                {
+                    path: "/admin/user",
+                    element: <User />,
+                },
             ],
         },
         {
@@ -76,14 +81,14 @@ export default function App() {
     ]);
     return (
         <>
-            {isLoading === false ||
+            {/* {isLoading === false ||
             window.location.pathname === "/login" ||
             window.location.pathname === "/register" ||
-            window.location.pathname === "/" ? (
-                <RouterProvider router={router} />
-            ) : (
-                <Loading />
-            )}
+            window.location.pathname === "/" ? ( */}
+            <RouterProvider router={router} />
+            {/* ) : (
+            <Loading />
+            )} */}
         </>
     );
 }

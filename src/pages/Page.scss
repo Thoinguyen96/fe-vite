@@ -16,7 +16,7 @@
     justify-content: center;
     height: 100vh;
     .register__form {
-        height: 500px;
+        height: 540px;
         display: flex;
         flex-direction: column;
         padding: 50px;
@@ -57,24 +57,29 @@
     height: 100vh;
 }
 .header__wrap {
+    padding: 0 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 95px;
     background-color: var(--header_white);
-    width: 100%;
-    .logo__tiki {
-        width: 75px;
-    }
+
     .wrap__icon-header {
         display: flex;
         gap: 30px;
         align-items: center;
         .gap__icon {
             display: flex;
+            gap: 8px;
             align-items: center;
-            justify-content: center;
-            gap: 5px;
+            .image {
+                border: transparent;
+                display: inline-block;
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                object-fit: cover;
+            }
         }
     }
 }
@@ -111,15 +116,48 @@
     border-style: none;
 }
 .headerAdmin__wrap {
+    padding: 0 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 95px;
     background-color: var(--header_white);
-    width: 100%;
     border: 1px solid var(--border__input);
-
-    .logo__tiki {
-        width: 75px;
+    .gap__icon {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        .image {
+            border: transparent;
+            display: inline-block;
+            border: 1px solid red;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+        }
     }
+}
+.logo__tiki {
+    cursor: pointer;
+    width: 75px;
+}
+
+.wrap__LayoutAdmin {
+    display: flex;
+    .wrap__admin-content {
+        width: 100%;
+        height: 100vh;
+    }
+}
+.wrapper__navbar {
+    height: 100vh;
+    transition: width, left, right, 0.3s;
+    color: #adadad;
+    height: 100%;
+}
+.footer_wrap {
+    display: block;
+    margin-top: auto;
+    text-align: center;
 }

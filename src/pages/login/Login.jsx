@@ -15,7 +15,7 @@ function Login() {
         const res = await postLogin(username, password, 2000);
         setSubmit(false);
         if (res?.data) {
-            localStorage.setItem("refreshToken", res.data.access_token);
+            localStorage.setItem("access_token", res.data.access_token);
             disPath(doAccountLogin(res.data.user));
             navigate("/");
             message.success("đăng nhập thành công");

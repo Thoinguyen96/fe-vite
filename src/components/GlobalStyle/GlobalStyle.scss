@@ -2,8 +2,11 @@
     --header_white: rgb(255, 255, 255);
     --border__input: rgb(221, 221, 227);
     --icon: #1677ff;
+    --text_grey: rgb(128, 128, 137);
+    --text_dark: rgb(56, 56, 61);
 }
 
 body {
     margin: 0 auto;
+    color: var(--text_grey);
 }

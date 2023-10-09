@@ -1,5 +1,5 @@
 function Footer() {
-    return <div>Footer </div>;
+    return <div className="footer_wrap">Ant Design ©2023 Created by Ant UED</div>;
 }
 
 export default Footer;

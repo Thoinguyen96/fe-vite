@@ -27,7 +27,7 @@ function Register() {
     return (
         <div className="register__wrap">
             <div className="register__form">
-                <span className="title">Đăng ký người dùng mới</span>
+                <h2 className="title">Đăng ký</h2>
                 <Form
                     name="basic"
                     labelCol={{
