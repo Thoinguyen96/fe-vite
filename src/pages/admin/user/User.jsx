@@ -1,8 +1,25 @@
 import { Table, Input, Pagination } from "antd";
+import { getPaginateUser } from "../../../services/ApiServices";
+import { useEffect, useState } from "react";
 function User() {
+    const [totalUser, setTotalUser] = useState(1);
+    const [page, setPage] = useState(1);
+    const [dataUser, setDataUser] = useState([]);
+    useEffect(() => {
+        fetchPaginateUser();
+    }, []);
+    const fetchPaginateUser = async () => {
+        const res = await getPaginateUser();
+        if (res && res.data) {
+            setTotalUser(res.data.meta.total);
+            setPage(res.data.meta.pages);
+            setDataUser(res.data.result);
+        }
+    };
+
     const columns = [
         {
-            title: "Name",
+            title: "ID",
             dataIndex: "name",
             sorter: {
                 compare: (a, b) => a.chinese - b.chinese,
@@ -10,7 +27,7 @@ function User() {
             },
         },
         {
-            title: "Chinese Score",
+            title: "Tên hiển thị",
             dataIndex: "chinese",
             sorter: {
                 compare: (a, b) => a.chinese - b.chinese,
@@ -18,7 +35,7 @@ function User() {
             },
         },
         {
-            title: "Math Score",
+            title: "Email",
             dataIndex: "math",
             sorter: {
                 compare: (a, b) => a.math - b.math,
@@ -26,7 +43,7 @@ function User() {
             },
         },
         {
-            title: "English Score",
+            title: "Phone",
             dataIndex: "english",
             sorter: {
                 compare: (a, b) => a.english - b.english,
@@ -34,15 +51,15 @@ function User() {
             },
         },
     ];
-    const data = [
-        {
-            key: "1",
-            name: "John Brown",
-            chinese: 98,
-            math: 60,
-            english: 70,
-        },
-    ];
+    const data = dataUser.map((user, index) => {
+        return {
+            key: index,
+            name: user._id,
+            chinese: user.fullName,
+            math: user.email,
+            english: user.phone,
+        };
+    });
 
     const onChange = (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
@@ -65,8 +82,16 @@ function User() {
                     <Input type="number" placeholder="Phone..." />
                 </div>
             </form>
-            <Table columns={columns} dataSource={data} onChange={onChange} />
-            <Pagination defaultCurrent={6} total={500} />
+            <Table
+                columns={columns}
+                dataSource={data}
+                onChange={onChange}
+                pagination={{
+                    defaultPageSize: 2,
+                    showSizeChanger: true,
+                    pageSizeOptions: [2, 4, 6, 8, 10, 20, 40, 60, 80, 100],
+                }}
+            />
         </div>
     );
 }

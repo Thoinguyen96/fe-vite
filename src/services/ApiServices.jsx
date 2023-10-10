@@ -11,3 +11,6 @@ export const callCountUser = () => {
 export const callLogout = () => {
     return instance.post("/v1/auth/logout");
 };
+export const getPaginateUser = (current, pageSize) => {
+    return instance.get(`v1/user?current=${current}&pageSize=${pageSize}`);
+};
