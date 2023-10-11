@@ -56,13 +56,13 @@ function User() {
     const data = dataUser
         .filter((item) => {
             if (searchName.length > 0) {
-                return searchName.toLowerCase() === "" ? item : item.fullName.toLowerCase().includes(searchName);
+                return item.fullName.toLowerCase().includes(searchName);
             }
             if (searchEmail.length > 0) {
-                return searchEmail.toLowerCase() === "" ? item : item.email.toLowerCase().includes(searchEmail);
+                return item.email.toLowerCase().includes(searchEmail);
             }
             if (searchPhone.length > 0) {
-                return searchPhone.toLowerCase() === "" ? item : item.phone.toLowerCase().includes(searchPhone);
+                return item.phone.toLowerCase().includes(searchPhone);
             }
             return item;
         })
