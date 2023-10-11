@@ -2,17 +2,18 @@ import { Table, Input, Pagination } from "antd";
 import { getPaginateUser } from "../../../services/ApiServices";
 import { useEffect, useState } from "react";
 function User() {
-    const [totalUser, setTotalUser] = useState(1);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(5);
     const [dataUser, setDataUser] = useState([]);
+    const [searchName, setSearchName] = useState("");
+    const [searchEmail, setSearchEmail] = useState("");
+    const [searchPhone, setSearchPhone] = useState("");
+
     useEffect(() => {
         fetchPaginateUser();
     }, []);
     const fetchPaginateUser = async () => {
         const res = await getPaginateUser();
         if (res && res.data) {
-            setTotalUser(res.data.meta.total);
-            setPage(res.data.meta.pages);
             setDataUser(res.data.result);
         }
     };
@@ -51,15 +52,29 @@ function User() {
             },
         },
     ];
-    const data = dataUser.map((user, index) => {
-        return {
-            key: index,
-            name: user._id,
-            chinese: user.fullName,
-            math: user.email,
-            english: user.phone,
-        };
-    });
+
+    const data = dataUser
+        .filter((item) => {
+            if (searchName.length > 0) {
+                return searchName.toLowerCase() === "" ? item : item.fullName.toLowerCase().includes(searchName);
+            }
+            if (searchEmail.length > 0) {
+                return searchEmail.toLowerCase() === "" ? item : item.email.toLowerCase().includes(searchEmail);
+            }
+            if (searchPhone.length > 0) {
+                return searchPhone.toLowerCase() === "" ? item : item.phone.toLowerCase().includes(searchPhone);
+            }
+            return item;
+        })
+        .map((user, index) => {
+            return {
+                key: index,
+                name: user._id,
+                chinese: user.fullName,
+                math: user.email,
+                english: user.phone,
+            };
+        });
 
     const onChange = (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
@@ -69,17 +84,17 @@ function User() {
             <form className="user__input">
                 <div className="width_input">
                     <span>Name</span>
-                    <Input placeholder="Name..." />
+                    <Input onChange={(e) => setSearchName(e.target.value)} placeholder="Name..." />
                 </div>
 
                 <div className="width_input">
                     <span>Email</span>
-                    <Input placeholder="Email..." />
+                    <Input onChange={(e) => setSearchEmail(e.target.value)} placeholder="Email..." />
                 </div>
 
                 <div className="width_input">
                     <span>Phone</span>
-                    <Input type="number" placeholder="Phone..." />
+                    <Input onChange={(e) => setSearchPhone(e.target.value)} type="number" placeholder="Phone..." />
                 </div>
             </form>
             <Table
@@ -87,9 +102,9 @@ function User() {
                 dataSource={data}
                 onChange={onChange}
                 pagination={{
-                    defaultPageSize: 2,
+                    defaultPageSize: page,
                     showSizeChanger: true,
-                    pageSizeOptions: [2, 4, 6, 8, 10, 20, 40, 60, 80, 100],
+                    pageSizeOptions: [5, 8, 10, 20, 40, 60, 80, 100],
                 }}
             />
         </div>
