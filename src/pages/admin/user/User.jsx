@@ -1,82 +1,73 @@
-import { Table, Input, Pagination } from "antd";
+import { Table, Input } from "antd";
 import { getPaginateUser } from "../../../services/ApiServices";
 import { useEffect, useState } from "react";
 function User() {
-    const [page, setPage] = useState(5);
     const [dataUser, setDataUser] = useState([]);
     const [searchName, setSearchName] = useState("");
     const [searchEmail, setSearchEmail] = useState("");
     const [searchPhone, setSearchPhone] = useState("");
+    const [current, setCurrent] = useState("");
+    const [pageSize, setPageSize] = useState(5);
+    const [page, setPage] = useState("");
 
     useEffect(() => {
         fetchPaginateUser();
     }, []);
     const fetchPaginateUser = async () => {
-        const res = await getPaginateUser();
+        const res = await getPaginateUser(current, pageSize);
         if (res && res.data) {
-            setDataUser(res.data.result);
+            setDataUser(res.data);
+            setPageSize(pageSize);
+            setCurrent(current);
         }
     };
 
     const columns = [
         {
             title: "ID",
-            dataIndex: "name",
-            sorter: {
-                compare: (a, b) => a.chinese - b.chinese,
-                multiple: 4,
-            },
+            dataIndex: "_id",
         },
         {
-            title: "Tên hiển thị",
-            dataIndex: "chinese",
-            sorter: {
-                compare: (a, b) => a.chinese - b.chinese,
-                multiple: 3,
-            },
+            title: "Full Name",
+            dataIndex: "fullName",
+            sorter: (a, b) => a.fullName.localeCompare(b.fullName),
         },
         {
             title: "Email",
-            dataIndex: "math",
-            sorter: {
-                compare: (a, b) => a.math - b.math,
-                multiple: 2,
-            },
+            dataIndex: "email",
+            sorter: (a, b) => a.email.localeCompare(b.email),
         },
         {
             title: "Phone",
-            dataIndex: "english",
-            sorter: {
-                compare: (a, b) => a.english - b.english,
-                multiple: 1,
-            },
+            dataIndex: "phone",
+            sorter: (a, b) => a.phone.localeCompare(b.phone),
         },
     ];
 
-    const data = dataUser
-        .filter((item) => {
-            if (searchName.length > 0) {
-                return item.fullName.toLowerCase().includes(searchName);
-            }
-            if (searchEmail.length > 0) {
-                return item.email.toLowerCase().includes(searchEmail);
-            }
-            if (searchPhone.length > 0) {
-                return item.phone.toLowerCase().includes(searchPhone);
-            }
-            return item;
-        })
-        .map((user, index) => {
-            return {
-                key: index,
-                name: user._id,
-                chinese: user.fullName,
-                math: user.email,
-                english: user.phone,
-            };
-        });
-
+    const data = dataUser.filter((item) => {
+        if (searchName.length > 0) {
+            return item.fullName.toLowerCase().includes(searchName);
+        }
+        if (searchEmail.length > 0) {
+            return item.email.toLowerCase().includes(searchEmail);
+        }
+        if (searchPhone.length > 0) {
+            return item.phone.toLowerCase().includes(searchPhone);
+        }
+        return item;
+    });
+    // .map((user, index) => {
+    //     return {
+    //         key: index,
+    //         name: user._id,
+    //         chinese: user.fullName,
+    //         math: user.email,
+    //         english: user.phone,
+    //     };
+    // });
     const onChange = (pagination, filters, sorter, extra) => {
+        setPageSize(pagination.pageSize);
+        setPage(pagination.total);
         console.log("params", pagination, filters, sorter, extra);
     };
     return (
@@ -98,11 +89,13 @@ function User() {
                 </div>
             </form>
             <Table
+                rowKey="_id"
                 columns={columns}
                 dataSource={data}
                 onChange={onChange}
                 pagination={{
-                    defaultPageSize: page,
+                    pageSize: pageSize,
+                    total: page,
                     showSizeChanger: true,
                     pageSizeOptions: [5, 8, 10, 20, 40, 60, 80, 100],
                 }}
