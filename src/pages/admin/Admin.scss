@@ -14,3 +14,15 @@
         }
     }
 }
+.wrap__view-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .view__avatar {
+        display: block;
+        border-radius: 50%;
+        object-fit: cover;
+        width: 200px;
+        height: 200px;
+    }
+}

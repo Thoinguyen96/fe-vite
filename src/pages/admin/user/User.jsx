@@ -1,6 +1,7 @@
 import { Table, Input } from "antd";
 import { getPaginateUser } from "../../../services/ApiServices";
 import { useEffect, useState } from "react";
+import InfoUser from "./infoUser/InfoUser";
 function User() {
     const [dataUser, setDataUser] = useState([]);
     const [searchName, setSearchName] = useState("");
@@ -9,6 +10,8 @@ function User() {
     const [current, setCurrent] = useState("");
     const [pageSize, setPageSize] = useState(5);
     const [page, setPage] = useState("");
+    const [infoUser, setInfoUser] = useState([]);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         fetchPaginateUser();
@@ -21,11 +24,21 @@ function User() {
             setCurrent(current);
         }
     };
-
+    const showLargeDrawer = (record) => {
+        setOpen(true);
+        setInfoUser(record);
+    };
     const columns = [
         {
             title: "ID",
             dataIndex: "_id",
+            render: (text, record) => {
+                return (
+                    <a onClick={() => showLargeDrawer(record)} href="#!">
+                        {record._id}
+                    </a>
+                );
+            },
         },
         {
             title: "Full Name",
@@ -97,9 +110,10 @@ function User() {
                     pageSize: pageSize,
                     total: page,
                     showSizeChanger: true,
-                    pageSizeOptions: [5, 8, 10, 20, 40, 60, 80, 100],
+                    pageSizeOptions: [5, 10, 20, 40, 60, 80, 100],
                 }}
             />
+            <InfoUser open={open} setOpen={setOpen} infoUser={infoUser} />
         </div>
     );
 }
