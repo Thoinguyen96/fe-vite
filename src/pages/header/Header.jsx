@@ -6,12 +6,23 @@ import { Button, Badge } from "antd";
 import LogOut from "../logout/LogOut";
 import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import InfoUser from "../admin/user/infoUser/InfoUser";
+import { useState } from "react";
 function Header() {
     const isAuthentication = useSelector((state) => state.account.authentically);
     const dataUser = useSelector((state) => state.account.user);
+    const [open, setOpen] = useState(false);
+    const handleInfoUser = () => {
+        setOpen(true);
+    };
+
     const items = [
         {
-            label: <a href="#!">Thông tin tài khoản</a>,
+            label: (
+                <a onClick={() => handleInfoUser()} href="#!">
+                    Thông tin tài khoản
+                </a>
+            ),
             key: "0",
         },
         {
@@ -69,6 +80,7 @@ function Header() {
                     </Badge>
                 </div>
             </div>
+            <InfoUser infoUser={dataUser} open={open} setOpen={setOpen} />
         </div>
     );
 }

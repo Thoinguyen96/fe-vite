@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Drawer, Space, Descriptions } from "antd";
 const InfoUser = (props) => {
     const { open, setOpen, infoUser } = props;
-    console.log(infoUser);
     const onClose = () => {
         setOpen(false);
     };

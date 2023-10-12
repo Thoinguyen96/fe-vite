@@ -4,14 +4,24 @@ import { Space, Dropdown } from "antd";
 import LogOut from "../logout/LogOut";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import InfoUser from "../admin/user/infoUser/InfoUser";
 
 function HeaderAdmin(props) {
     const isAuthentication = useSelector((state) => state.account.authentically);
     const dataUser = useSelector((state) => state.account.user);
     const { toggleCollapsed } = props;
+    const [open, setOpen] = useState(false);
+    const handleInfoUser = () => {
+        setOpen(true);
+    };
     const items = [
         {
-            label: <a href="#!">Thông tin tài khoản</a>,
+            label: (
+                <a onClick={() => handleInfoUser()} href="#!">
+                    Thông tin tài khoản
+                </a>
+            ),
             key: "0",
         },
         {
@@ -52,6 +62,7 @@ function HeaderAdmin(props) {
                     </a>
                 </Dropdown>
             </div>
+            <InfoUser infoUser={dataUser} open={open} setOpen={setOpen} />
         </div>
     );
 }
