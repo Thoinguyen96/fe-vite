@@ -1,7 +1,9 @@
-import { Table, Input } from "antd";
-import { getPaginateUser } from "../../../services/ApiServices";
+import { Table, Input, Button, message } from "antd";
+import { deleteUser, getPaginateUser } from "../../../services/ApiServices";
 import { useEffect, useState } from "react";
 import InfoUser from "./infoUser/InfoUser";
+import { DeleteOutlined } from "@ant-design/icons";
+import ModalCreateUser from "./modalCreateUser/ModalCreateUser";
 function User() {
     const [dataUser, setDataUser] = useState([]);
     const [searchName, setSearchName] = useState("");
@@ -12,10 +14,14 @@ function User() {
     const [page, setPage] = useState("");
     const [infoUser, setInfoUser] = useState([]);
     const [open, setOpen] = useState(false);
+    const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
 
     useEffect(() => {
         fetchPaginateUser();
     }, []);
+    const showModalCreateUser = () => {
+        setIsModalCreateOpen(true);
+    };
     const fetchPaginateUser = async () => {
         const res = await getPaginateUser(current, pageSize);
         if (res && res.data) {
@@ -27,6 +33,19 @@ function User() {
     const showLargeDrawer = (record) => {
         setOpen(true);
         setInfoUser(record);
+    };
+    const handleDelete = async (id) => {
+        const res = await deleteUser(id);
+        console.log();
+        if (res.statusCode === 200) {
+            fetchPaginateUser();
+            message.success({
+                type: "success",
+                content: "Delete success",
+            });
+        } else {
+            message.error(res.message);
+        }
     };
     const columns = [
         {
@@ -54,6 +73,17 @@ function User() {
             title: "Phone",
             dataIndex: "phone",
             sorter: (a, b) => a.phone.localeCompare(b.phone),
+        },
+        {
+            title: "Action",
+            render: function (text, record, index) {
+                return (
+                    <DeleteOutlined
+                        onClick={() => handleDelete(record._id)}
+                        style={{ color: "red", cursor: "pointer" }}
+                    />
+                );
+            },
         },
     ];
 
@@ -83,6 +113,15 @@ function User() {
         setPage(pagination.total);
         console.log("params", pagination, filters, sorter, extra);
     };
+    const handleHeader = () => {
+        return (
+            <div>
+                <Button onClick={showModalCreateUser} type="primary">
+                    Create user
+                </Button>
+            </div>
+        );
+    };
     return (
         <div className="user__wrap">
             <form className="user__input">
@@ -102,6 +141,7 @@ function User() {
                 </div>
             </form>
             <Table
+                title={() => handleHeader()}
                 rowKey="_id"
                 columns={columns}
                 dataSource={data}
@@ -114,6 +154,11 @@ function User() {
                 }}
             />
             <InfoUser open={open} setOpen={setOpen} infoUser={infoUser} />
+            <ModalCreateUser
+                isModalCreateOpen={isModalCreateOpen}
+                setIsModalCreateOpen={setIsModalCreateOpen}
+                fetchPaginateUser={fetchPaginateUser}
+            />
         </div>
     );
 }

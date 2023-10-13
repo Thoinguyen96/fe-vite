@@ -21,6 +21,7 @@ const InfoUser = (props) => {
             label: "ID",
             children: infoUser._id,
         },
+
         {
             key: "4",
             label: "Role",
@@ -33,10 +34,13 @@ const InfoUser = (props) => {
             children: infoUser.updatedAt,
         },
     ];
+    const handleTitle = () => {
+        return <h4>Info user</h4>;
+    };
     return (
         <>
             <Drawer
-                title="User Info"
+                title={handleTitle()}
                 placement="right"
                 width="736"
                 onClose={onClose}
@@ -55,7 +59,11 @@ const InfoUser = (props) => {
                 </div>
                 <br />
                 <br />
-                <Descriptions layout="vertical" items={items} />
+                <Descriptions bordered layout="vertical" items={items} />
+                <br />
+                <div className="wrap_action">
+                    <Button type="primary">Update</Button>
+                </div>
             </Drawer>
         </>
     );
