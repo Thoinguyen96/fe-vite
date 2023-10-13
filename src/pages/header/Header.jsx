@@ -20,16 +20,26 @@ function Header() {
         {
             label: (
                 <a onClick={() => handleInfoUser()} href="#!">
-                    Thông tin tài khoản
+                    Info account
                 </a>
             ),
-            key: "0",
+            key: "info",
         },
         {
             label: <LogOut />,
-            key: "1",
+            key: "logout",
         },
     ];
+    if (dataUser.role === "ADMIN") {
+        items.unshift({
+            label: (
+                <Link to={"/admin"} onClick={() => handleInfoUser()}>
+                    Manage Admin
+                </Link>
+            ),
+            key: "admin",
+        });
+    }
     return (
         <div className="header__wrap">
             <img className="logo__tiki" src={logoTiki} alt="logoTIKI.png" />

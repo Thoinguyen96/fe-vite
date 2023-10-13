@@ -19,16 +19,17 @@ function HeaderAdmin(props) {
         {
             label: (
                 <a onClick={() => handleInfoUser()} href="#!">
-                    Thông tin tài khoản
+                    Info account
                 </a>
             ),
-            key: "0",
+            key: "info",
         },
         {
             label: <LogOut />,
-            key: "1",
+            key: "logout",
         },
     ];
+
     return (
         <div className="headerAdmin__wrap">
             <MenuFoldOutlined onClick={toggleCollapsed} style={{ fontSize: 30, padding: 10 }} />
