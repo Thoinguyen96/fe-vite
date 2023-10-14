@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { DesktopOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Link } from "react-router-dom";
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
     return {
@@ -15,7 +16,20 @@ const items = [
     getItem("Manage order", "2", <DesktopOutlined />),
     getItem("Manage books", "3", <DesktopOutlined />),
 
-    getItem("Manage users", "sub1", <UserOutlined />, [getItem("Bill", "4"), getItem("Alex", "5")]),
+    getItem("Manage users", "sub1", <UserOutlined />, [
+        getItem(
+            <Link to={"/admin/user"}>
+                <span>User</span>
+            </Link>,
+            "4"
+        ),
+        getItem(
+            <Link to={"/admin"}>
+                <span>Admin</span>
+            </Link>,
+            "5"
+        ),
+    ]),
     getItem("Team", "sub2", <TeamOutlined />, [getItem("Team 1", "6"), getItem("Team 2", "8")]),
     getItem("Files", "9", <FileOutlined />),
 ];

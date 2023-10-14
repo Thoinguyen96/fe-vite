@@ -1,9 +1,10 @@
-import { Table, Input, Button, message } from "antd";
+import { Table, Input, Button, message, Flex } from "antd";
 import { deleteUser, getPaginateUser } from "../../../services/ApiServices";
 import { useEffect, useState } from "react";
 import InfoUser from "./infoUser/InfoUser";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UserAddOutlined, UploadOutlined } from "@ant-design/icons";
 import ModalCreateUser from "./modalCreateUser/ModalCreateUser";
+import ModalUpload from "./modalUpload/ModalUpload";
 function User() {
     const [dataUser, setDataUser] = useState([]);
     const [searchName, setSearchName] = useState("");
@@ -15,6 +16,7 @@ function User() {
     const [infoUser, setInfoUser] = useState([]);
     const [open, setOpen] = useState(false);
     const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
+    const [isModalUpload, setIsModalUpload] = useState(false);
 
     useEffect(() => {
         fetchPaginateUser();
@@ -86,7 +88,6 @@ function User() {
             },
         },
     ];
-
     const data = dataUser.filter((item) => {
         if (searchName.length > 0) {
             return item.fullName.toLowerCase().includes(searchName);
@@ -99,15 +100,6 @@ function User() {
         }
         return item;
     });
-    // .map((user, index) => {
-    //     return {
-    //         key: index,
-    //         name: user._id,
-    //         chinese: user.fullName,
-    //         math: user.email,
-    //         english: user.phone,
-    //     };
-    // });
     const onChange = (pagination, filters, sorter, extra) => {
         setPageSize(pagination.pageSize);
         setPage(pagination.total);
@@ -115,9 +107,14 @@ function User() {
     };
     const handleHeader = () => {
         return (
-            <div>
+            <div style={{ display: "flex", gap: 30, justifyContent: "end" }}>
                 <Button onClick={showModalCreateUser} type="primary">
+                    <UserAddOutlined />
                     Create user
+                </Button>
+                <Button onClick={() => setIsModalUpload(true)} type="primary">
+                    <UploadOutlined />
+                    Upload file
                 </Button>
             </div>
         );
@@ -159,6 +156,7 @@ function User() {
                 setIsModalCreateOpen={setIsModalCreateOpen}
                 fetchPaginateUser={fetchPaginateUser}
             />
+            <ModalUpload isModalUpload={isModalUpload} setIsModalUpload={setIsModalUpload} />
         </div>
     );
 }
