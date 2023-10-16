@@ -20,3 +20,6 @@ export const deleteUser = (id) => {
 export const createUser = (fullName, password, email, phone) => {
     return instance.post(`v1/user`, { fullName, password, email, phone });
 };
+export const importDataUser = (data) => {
+    return instance.post("/v1/user/bulk-create", data);
+};
