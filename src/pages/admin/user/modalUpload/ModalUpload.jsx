@@ -3,6 +3,7 @@ import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload, Modal, Space, Table, Tag } from "antd";
 import * as XLSX from "xlsx";
 import { importDataUser } from "../../../../services/ApiServices";
+import fileTemplate from "../fileTemplate.xlsx?url";
 const ModalUpload = (props) => {
     const { Dragger } = Upload;
     const { isModalUpload, setIsModalUpload } = props;
@@ -25,10 +26,11 @@ const ModalUpload = (props) => {
                 reader.readAsArrayBuffer(file);
 
                 reader.onload = function (e) {
-                    let data = new Uint8Array(reader.result);
+                    let data = new Uint8Array(e.target.result);
                     let workbook = XLSX.read(data, { type: "array" });
                     // find the name of your sheet in the workbook first
                     let worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                    console.log(workbook);
                     // convert to json format
                     const jsonData = XLSX.utils.sheet_to_json(worksheet, {
                         header: ["fullName", "email", "phone"],
@@ -70,7 +72,10 @@ const ModalUpload = (props) => {
     const handleCancel = () => {
         setIsModalUpload(false);
     };
-
+    const handleDownloadFile = (e) => {
+        e.stopPropagation();
+        console.log(e);
+    };
     const handleImport = async () => {
         const data = dataExcel.map((item) => {
             item.password = "123456";
@@ -88,7 +93,6 @@ const ModalUpload = (props) => {
                     </div>
                 ),
             });
-            // message.success("Success  " + res.data.countSuccess + "Error  " + res.data.countError);
         } else {
             message.error("Error " + res.message);
         }
@@ -116,6 +120,9 @@ const ModalUpload = (props) => {
                         Support for a single or bulk upload. Strictly prohibited from uploading company data or other
                         banned files.
                     </p>
+                    <a onClick={(e) => handleDownloadFile(e)} href={fileTemplate} download>
+                        Click to download
+                    </a>
                 </Dragger>
                 <Table
                     title={() => <span>Dữ liệu upload</span>}

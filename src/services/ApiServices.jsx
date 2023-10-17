@@ -21,5 +21,8 @@ export const createUser = (fullName, password, email, phone) => {
     return instance.post(`v1/user`, { fullName, password, email, phone });
 };
 export const importDataUser = (data) => {
-    return instance.post("/v1/user/bulk-create", data);
+    return instance.post("v1/user/bulk-create", data);
+};
+export const editUser = (_id, fullName, phone) => {
+    return instance.put("v1/user", { _id, fullName, phone });
 };

@@ -1,10 +1,12 @@
-import { Table, Input, Button, message, Flex } from "antd";
-import { deleteUser, getPaginateUser } from "../../../services/ApiServices";
+import { deleteUser, editUser, getPaginateUser } from "../../../services/ApiServices";
 import { useEffect, useState } from "react";
 import InfoUser from "./infoUser/InfoUser";
-import { DeleteOutlined, UserAddOutlined, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, UserAddOutlined, UploadOutlined, ExportOutlined } from "@ant-design/icons";
 import ModalCreateUser from "./modalCreateUser/ModalCreateUser";
 import ModalUpload from "./modalUpload/ModalUpload";
+import * as XLSX from "xlsx/xlsx.mjs";
+import { Button, Input, Modal, message, Table } from "antd";
+
 function User() {
     const [dataUser, setDataUser] = useState([]);
     const [searchName, setSearchName] = useState("");
@@ -17,6 +19,11 @@ function User() {
     const [open, setOpen] = useState(false);
     const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
     const [isModalUpload, setIsModalUpload] = useState(false);
+    const [isModalEdit, setIsModalEdit] = useState(false);
+    const [dataEdit, setDataEdit] = useState("");
+    const [email, setEmail] = useState("");
+    const [fullName, setFullName] = useState("");
+    const [phone, setPhone] = useState("");
 
     useEffect(() => {
         fetchPaginateUser();
@@ -49,6 +56,28 @@ function User() {
             message.error(res.message);
         }
     };
+    const handleEdit = async (record) => {
+        setIsModalEdit(true);
+        setEmail(record.email);
+        setFullName(record.fullName);
+        setPhone(record.phone);
+        setDataEdit(record);
+    };
+
+    const submitEditUser = async () => {
+        const res = await editUser(dataEdit._id, fullName, phone);
+        if (res && res.data) {
+            message.success("Update user success");
+            fetchPaginateUser();
+            setIsModalEdit(false);
+        } else {
+            message.error(res.message);
+        }
+        console.log(res);
+    };
+    const handleCancel = () => {
+        setIsModalEdit(false);
+    };
     const columns = [
         {
             title: "ID",
@@ -80,10 +109,13 @@ function User() {
             title: "Action",
             render: function (text, record, index) {
                 return (
-                    <DeleteOutlined
-                        onClick={() => handleDelete(record._id)}
-                        style={{ color: "red", cursor: "pointer" }}
-                    />
+                    <div style={{ display: "flex", gap: 30 }}>
+                        <EditOutlined onClick={() => handleEdit(record)} style={{ color: "red", cursor: "pointer" }} />
+                        <DeleteOutlined
+                            onClick={() => handleDelete(record._id)}
+                            style={{ color: "orange", cursor: "pointer" }}
+                        />
+                    </div>
                 );
             },
         },
@@ -105,6 +137,14 @@ function User() {
         setPage(pagination.total);
         console.log("params", pagination, filters, sorter, extra);
     };
+    const ExportFile = () => {
+        console.log(dataUser);
+        const sheet = XLSX.utils.json_to_sheet(dataUser);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, sheet, "Sheet 1");
+        XLSX.writeFile(workbook, `sheet1.xls`);
+    };
+
     const handleHeader = () => {
         return (
             <div style={{ display: "flex", gap: 30, justifyContent: "end" }}>
@@ -116,9 +156,14 @@ function User() {
                     <UploadOutlined />
                     Upload file
                 </Button>
+                <Button onClick={ExportFile} type="primary">
+                    <ExportOutlined />
+                    Export File
+                </Button>
             </div>
         );
     };
+
     return (
         <div className="user__wrap">
             <form className="user__input">
@@ -157,6 +202,28 @@ function User() {
                 fetchPaginateUser={fetchPaginateUser}
             />
             <ModalUpload isModalUpload={isModalUpload} setIsModalUpload={setIsModalUpload} />
+
+            <Modal
+                autoFocusButton={null}
+                title="Update user"
+                open={isModalEdit}
+                onOk={submitEditUser}
+                onCancel={handleCancel}
+            >
+                <br />
+                <span>Full Name</span>
+                <Input placeholder="full name..." onChange={(e) => setFullName(e.target.value)} value={fullName} />
+                <br />
+                <br />
+                <span>Email</span>
+                <Input disabled onChange={(e) => setEmail(e.target.value)} placeholder="email..." value={email} />
+                <br />
+                <br />
+                <span>Phone</span>
+                <Input type="number" onChange={(e) => setPhone(e.target.value)} placeholder="Phone..." value={phone} />
+                <br />
+                <br />
+            </Modal>
         </div>
     );
 }
