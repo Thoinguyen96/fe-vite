@@ -6,10 +6,9 @@ import Footer from "../../pages/footer/Footer";
 import { useSelector } from "react-redux";
 import Login from "../../pages/login/Login";
 
-function LayoutAdmin(props) {
+function LayoutAdmin() {
     const [collapsed, setCollapsed] = useState(false);
     const roleUser = useSelector((state) => state.account.user["role"]);
-    console.log(roleUser);
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
     };

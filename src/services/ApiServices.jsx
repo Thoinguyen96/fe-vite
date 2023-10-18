@@ -26,3 +26,6 @@ export const importDataUser = (data) => {
 export const editUser = (_id, fullName, phone) => {
     return instance.put("v1/user", { _id, fullName, phone });
 };
+export const getListBooks = (current, pageSize) => {
+    return instance.get(`v1/book?current=${current}& pageSize=${pageSize}`);
+};

@@ -14,6 +14,8 @@ import Admin from "./pages/admin/Admin";
 import Authorization from "./layout/drumLayout/Authorization";
 import LayoutAdmin from "./layout/layoutAdmin/LayoutAdmin";
 import User from "./pages/admin/user/User";
+import Books from "./pages/admin/books/Books";
+
 export default function App() {
     const isAuthentication = useSelector((state) => state.account.authentically);
     // const isLoading = useSelector((state) => state.account.isLoading);
@@ -65,6 +67,10 @@ export default function App() {
                 {
                     path: "/admin/user",
                     element: <User />,
+                },
+                {
+                    path: "/admin/books",
+                    element: <Books />,
                 },
             ],
         },

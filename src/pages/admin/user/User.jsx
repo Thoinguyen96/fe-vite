@@ -5,7 +5,7 @@ import { DeleteOutlined, EditOutlined, UserAddOutlined, UploadOutlined, ExportOu
 import ModalCreateUser from "./modalCreateUser/ModalCreateUser";
 import ModalUpload from "./modalUpload/ModalUpload";
 import * as XLSX from "xlsx/xlsx.mjs";
-import { Button, Input, Modal, message, Table } from "antd";
+import { Button, Input, Modal, message, Table, Popconfirm } from "antd";
 
 function User() {
     const [dataUser, setDataUser] = useState([]);
@@ -78,6 +78,7 @@ function User() {
     const handleCancel = () => {
         setIsModalEdit(false);
     };
+
     const columns = [
         {
             title: "ID",
@@ -107,14 +108,22 @@ function User() {
         },
         {
             title: "Action",
-            render: function (text, record, index) {
+            render: function (text, record) {
                 return (
                     <div style={{ display: "flex", gap: 30 }}>
                         <EditOutlined onClick={() => handleEdit(record)} style={{ color: "red", cursor: "pointer" }} />
-                        <DeleteOutlined
-                            onClick={() => handleDelete(record._id)}
-                            style={{ color: "orange", cursor: "pointer" }}
-                        />
+                        <Popconfirm
+                            title="Delete the task"
+                            description="Are you sure to delete this task?"
+                            cancelText="No"
+                            okText="Yes"
+                            onConfirm={() => handleDelete(record._id)}
+                            placement="topLeft"
+                        >
+                            <div style={{ display: "flex", gap: 30 }}>
+                                <DeleteOutlined style={{ color: "orange", cursor: "pointer" }} />
+                            </div>
+                        </Popconfirm>
                     </div>
                 );
             },
