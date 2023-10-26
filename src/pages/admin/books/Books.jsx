@@ -1,8 +1,11 @@
-import { deleteUser, getListBooks } from "../../../services/ApiServices";
+import { deleteBook, getListBooks } from "../../../services/ApiServices";
 import { useEffect, useState } from "react";
-import { DeleteOutlined, EditOutlined, UserAddOutlined, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Input, message, Descriptions, Table, Drawer, Space, Popconfirm, Image } from "antd";
-
+// import UploadBook from "./uploadBook/UploadBook";
+import BookModalCreate from "./uploadBook/bookModalCreate/BookModalCreate";
+import ModalEditBook from "./modalEditbook/ModalEditBook";
+import * as XLSX from "xlsx";
 function Books() {
     const [dataBooks, setDataBooks] = useState([]);
     const [searchName, setSearchName] = useState("");
@@ -13,6 +16,17 @@ function Books() {
     const [page, setPage] = useState("");
     const [openInfoBooks, setOpenInfoBooks] = useState(false);
     const [dataInfoBooks, setDataInfoBooks] = useState([]);
+    const [dataEditBook, setDataEditBook] = useState([]);
+
+    const [isModalUploadBook, setIsModalUploadBook] = useState(false);
+    const [isModalEditBook, setIsModalEditBook] = useState(false);
+
+    const ExportFileBooks = () => {
+        const worksheet = XLSX.utils.json_to_sheet(dataBooks);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "ExportBooks.xlsx");
+    };
 
     useEffect(() => {
         fetchPaginateBooks();
@@ -20,17 +34,18 @@ function Books() {
 
     const fetchPaginateBooks = async () => {
         const res = await getListBooks(current, pageSize);
-        console.log(res);
         if (res && res.data) {
             setDataBooks(res.data);
             setPageSize(pageSize);
             setCurrent(current);
         }
     };
-
+    const handleEditBook = (data) => {
+        setIsModalEditBook(true);
+        setDataEditBook(data);
+    };
     const handleDelete = async (id) => {
-        const res = await deleteUser(id);
-        console.log();
+        const res = await deleteBook(id);
         if (res.statusCode === 200) {
             fetchPaginateBooks();
             message.success({
@@ -88,7 +103,10 @@ function Books() {
             render: function (text, record) {
                 return (
                     <div style={{ display: "flex", gap: 30 }}>
-                        <EditOutlined style={{ color: "red", cursor: "pointer", float: "left" }} />
+                        <EditOutlined
+                            onClick={() => handleEditBook(record)}
+                            style={{ color: "orange", cursor: "pointer", float: "left" }}
+                        />
                         <Popconfirm
                             title="Delete the task"
                             description="Are you sure to delete this task?"
@@ -98,7 +116,7 @@ function Books() {
                             placement="topLeft"
                         >
                             <div style={{ display: "flex", gap: 30 }}>
-                                <DeleteOutlined style={{ color: "orange", cursor: "pointer" }} />
+                                <DeleteOutlined style={{ color: "red", cursor: "pointer" }} />
                             </div>
                         </Popconfirm>
                     </div>
@@ -127,13 +145,13 @@ function Books() {
     const handleHeader = () => {
         return (
             <div style={{ display: "flex", gap: 30, justifyContent: "end" }}>
-                <Button type="primary">
-                    <UserAddOutlined />
-                    Create user
-                </Button>
-                <Button type="primary">
+                <Button onClick={() => setIsModalUploadBook(true)} type="primary">
                     <UploadOutlined />
-                    Upload file
+                    Create book
+                </Button>
+                <Button onClick={ExportFileBooks} type="primary">
+                    <UploadOutlined />
+                    Export book
                 </Button>
             </div>
         );
@@ -170,9 +188,7 @@ function Books() {
             children: dataInfoBooks.updatedAt,
         },
     ];
-    const handleTitle = () => {
-        return <h4>Info user</h4>;
-    };
+
     return (
         <div className="user__wrap">
             <form className="user__input">
@@ -191,7 +207,7 @@ function Books() {
                 </div>
             </form>
             <Table
-                title={() => handleHeader()}
+                title={handleHeader}
                 rowKey="_id"
                 columns={columns}
                 dataSource={data}
@@ -204,7 +220,7 @@ function Books() {
                 }}
             />
             <Drawer
-                title={handleTitle()}
+                title="Info Books"
                 placement="right"
                 width="736"
                 onClose={onClose}
@@ -218,7 +234,19 @@ function Books() {
                     </Space>
                 }
             >
-                <Image width={200} src={"http://localhost:8080/images/book/" + dataInfoBooks.thumbnail} />
+                <div style={{ display: "flex", gap: 30 }}>
+                    <Image width={150} src={"http://localhost:8080/images/book/" + dataInfoBooks.thumbnail} />
+                    {dataInfoBooks.slider &&
+                        dataInfoBooks.slider.length > 0 &&
+                        dataInfoBooks.slider.map((image) => {
+                            console.log(image);
+                            return (
+                                <>
+                                    <Image width={150} src={"http://localhost:8080/images/book/" + image} />
+                                </>
+                            );
+                        })}
+                </div>
                 <br />
                 <br />
                 <Descriptions bordered layout="vertical" items={items} />
@@ -227,6 +255,18 @@ function Books() {
                     <Button type="primary">Update</Button>
                 </div>
             </Drawer>
+            {/* <UploadBook isModalUploadBook={isModalUploadBook} setIsModalUploadBook={setIsModalUploadBook} /> */}
+            <BookModalCreate
+                setIsModalUploadBook={setIsModalUploadBook}
+                isModalUploadBook={isModalUploadBook}
+                fetchPaginateBooks={fetchPaginateBooks}
+            />
+            <ModalEditBook
+                setIsModalEditBook={setIsModalEditBook}
+                isModalEditBook={isModalEditBook}
+                dataEditBook={dataEditBook}
+                fetchPaginateBooks={fetchPaginateBooks}
+            />
         </div>
     );
 }
