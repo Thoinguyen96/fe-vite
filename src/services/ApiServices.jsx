@@ -11,8 +11,8 @@ export const callCountUser = () => {
 export const callLogout = () => {
     return instance.post("/v1/auth/logout");
 };
-export const getPaginateUser = (current, pageSize) => {
-    return instance.get(`v1/user?current=${current}&pageSize=${pageSize}`);
+export const getPaginateUser = (query) => {
+    return instance.get(`v1/user?${query}`);
 };
 export const deleteUser = (id) => {
     return instance.delete(`v1/user/${id}`);
@@ -26,8 +26,8 @@ export const importDataUser = (data) => {
 export const editUser = (_id, fullName, phone) => {
     return instance.put("v1/user", { _id, fullName, phone });
 };
-export const getListBooks = (current, pageSize) => {
-    return instance.get(`v1/book?current=${current}& pageSize=${pageSize}`);
+export const getListBooks = (query) => {
+    return instance.get(`v1/book?current=${query}`);
 };
 
 // export const callUploadBookImg = (fileImg) => {

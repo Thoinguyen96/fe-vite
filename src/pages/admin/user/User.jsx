@@ -9,12 +9,9 @@ import { Button, Input, Modal, message, Table, Popconfirm } from "antd";
 
 function User() {
     const [dataUser, setDataUser] = useState([]);
-    const [searchName, setSearchName] = useState("");
-    const [searchEmail, setSearchEmail] = useState("");
-    const [searchPhone, setSearchPhone] = useState("");
-    const [current, setCurrent] = useState("");
+    const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(5);
-    const [page, setPage] = useState("");
+    const [totalPage, setTotalPage] = useState([]);
     const [infoUser, setInfoUser] = useState([]);
     const [open, setOpen] = useState(false);
     const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
@@ -24,19 +21,33 @@ function User() {
     const [email, setEmail] = useState("");
     const [fullName, setFullName] = useState("");
     const [phone, setPhone] = useState("");
+    const [sortQueryEmail, setSortQueryEmail] = useState("");
+    const [sortQueryName, setSortQueryName] = useState("");
+    const [sortQueryPhone, setSortQueryPhone] = useState("");
+    const [sortQueryDefault, setSortQueryDefault] = useState("");
 
     useEffect(() => {
         fetchPaginateUser();
-    }, []);
+    }, [current, pageSize, sortQueryEmail, sortQueryPhone, sortQueryName]);
     const showModalCreateUser = () => {
         setIsModalCreateOpen(true);
     };
     const fetchPaginateUser = async () => {
-        const res = await getPaginateUser(current, pageSize);
+        let query = `current=${current}&pageSize=${pageSize}`;
+        if (sortQueryEmail) {
+            query = query + `&email=/${sortQueryEmail}/i`;
+        }
+        if (sortQueryName) {
+            query = query + `&fullName=/${sortQueryName}/i`;
+        }
+        if (sortQueryPhone) {
+            query = query + `&phone=/${sortQueryPhone}/i`;
+        }
+
+        const res = await getPaginateUser(query + `&sort=-updatedAt`);
         if (res && res.data) {
-            setDataUser(res.data);
-            setPageSize(pageSize);
-            setCurrent(current);
+            setDataUser(res.data.result);
+            setTotalPage(res.data.meta.total);
         }
     };
     const showLargeDrawer = (record) => {
@@ -129,22 +140,15 @@ function User() {
             },
         },
     ];
-    const data = dataUser.filter((item) => {
-        if (searchName.length > 0) {
-            return item.fullName.toLowerCase().includes(searchName);
+
+    const onChange = (pagination) => {
+        console.log(pagination);
+        if (pagination.current !== current) {
+            setCurrent(pagination.current);
         }
-        if (searchEmail.length > 0) {
-            return item.email.toLowerCase().includes(searchEmail);
+        if (pagination.current !== pageSize) {
+            setPageSize(pagination.pageSize);
         }
-        if (searchPhone.length > 0) {
-            return item.phone.toLowerCase().includes(searchPhone);
-        }
-        return item;
-    });
-    const onChange = (pagination, filters, sorter, extra) => {
-        setPageSize(pagination.pageSize);
-        setPage(pagination.total);
-        console.log("params", pagination, filters, sorter, extra);
     };
     const ExportFile = () => {
         console.log(dataUser);
@@ -178,28 +182,29 @@ function User() {
             <form className="user__input">
                 <div className="width_input">
                     <span>Name</span>
-                    <Input onChange={(e) => setSearchName(e.target.value)} placeholder="Name..." />
+                    <Input onChange={(e) => setSortQueryName(e.target.value)} placeholder="Name..." />
                 </div>
 
                 <div className="width_input">
                     <span>Email</span>
-                    <Input onChange={(e) => setSearchEmail(e.target.value)} placeholder="Email..." />
+                    <Input onChange={(e) => setSortQueryEmail(e.target.value)} placeholder="Email..." />
                 </div>
 
                 <div className="width_input">
                     <span>Phone</span>
-                    <Input onChange={(e) => setSearchPhone(e.target.value)} type="number" placeholder="Phone..." />
+                    <Input onChange={(e) => setSortQueryPhone(e.target.value)} type="number" placeholder="Phone..." />
                 </div>
             </form>
             <Table
                 title={() => handleHeader()}
                 rowKey="_id"
                 columns={columns}
-                dataSource={data}
+                dataSource={dataUser}
                 onChange={onChange}
                 pagination={{
                     pageSize: pageSize,
-                    total: page,
+                    total: totalPage,
+                    current: current,
                     showSizeChanger: true,
                     pageSizeOptions: [5, 10, 20, 40, 60, 80, 100],
                 }}

@@ -4,8 +4,15 @@
     --icon: #1677ff;
     --text_grey: rgb(128, 128, 137);
     --text_dark: rgb(56, 56, 61);
+    --backGround: #ffffff;
+    --text_white: #fff;
 }
-
+html {
+    font-size: 62.5%;
+}
+* {
+    box-sizing: border-box;
+}
 body {
     margin: 0 auto;
     color: var(--text_grey);
