@@ -24,7 +24,6 @@ function User() {
     const [sortQueryEmail, setSortQueryEmail] = useState("");
     const [sortQueryName, setSortQueryName] = useState("");
     const [sortQueryPhone, setSortQueryPhone] = useState("");
-    const [sortQueryDefault, setSortQueryDefault] = useState("");
 
     useEffect(() => {
         fetchPaginateUser();

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "../Page.scss";
-import { Form, Col, Row, Checkbox, Input, Button, Rate, Tabs, Pagination } from "antd";
+import { Form, Col, Row, Checkbox, Button, Rate, Tabs, Pagination, InputNumber } from "antd";
 import { callFetchCategory, getListBooks } from "../../services/ApiServices";
+import { useNavigate } from "react-router-dom";
 function Home() {
     const [category, setCategory] = useState([]);
     const [current, setCurrent] = useState(1);
@@ -9,39 +10,16 @@ function Home() {
     const [totalPaginate, setTotalPaginate] = useState([]);
     const [dataBook, setDataBook] = useState([]);
     const [query, setQuery] = useState("");
-
+    const [filterCategory, setFilterCategory] = useState([]);
+    const [rangeSmall, setRangeSmall] = useState("");
+    const [rangeLarge, setRangeLarge] = useState("");
+    const [applyPrice, setApplyPrice] = useState("");
+    const navigate = useNavigate();
     useEffect(() => {
         apiCategoryBook();
         apiListBooksPaginate();
-    }, [current, pageSize, query]);
-    // const dataPopular = dataBook
-    //     .filter((item) => {
-    //         return item;
-    //     })
-    //     .sort(function (a, b) {
-    //         return b.sold - a.sold;
-    //     });
-    // const dataProductNew = dataBook
-    //     .filter((item) => {
-    //         return item;
-    //     })
-    //     .sort(function (a, b) {
-    //         return a.updatedAt - b.updatedAt;
-    //     });
-    // const dataLowToHigh = dataBook
-    //     .filter((item) => {
-    //         return item;
-    //     })
-    //     .sort(function (a, b) {
-    //         return a.price - b.price;
-    //     });
-    // const dataHeightToLow = dataBook
-    //     .filter((item) => {
-    //         return item;
-    //     })
-    //     .sort(function (a, b) {
-    //         return b.price - a.price;
-    //     });
+    }, [current, pageSize, query, filterCategory, applyPrice]);
+
     const items = [
         {
             key: "sort=-sold",
@@ -81,31 +59,70 @@ function Home() {
             setCurrent(1);
         }
     };
-    const handleCategory = (e, item) => {
-        const dataFilterCategory = dataBook.filter((fil) => {
-            return fil.category === item.item;
-        });
-        if (dataFilterCategory.length > 0) {
-            setDataBook(dataFilterCategory);
-        }
-        if (e === false) {
-            apiListBooksPaginate();
+
+    const handleCategory = (list) => {
+        if (list.length > 0) {
+            setFilterCategory(list);
+        } else {
+            setFilterCategory("");
         }
     };
-    //
     const apiListBooksPaginate = async () => {
         let sortQuery = `${current}&pageSize=${pageSize}`;
         if (query) {
             sortQuery = sortQuery + "&" + query;
         }
+        if (filterCategory) {
+            sortQuery = sortQuery + "&category=" + filterCategory;
+        }
+        if (applyPrice.rangeSmall > 0 && applyPrice.rangeLarge > 0) {
+            sortQuery = sortQuery + `&price>${applyPrice.rangeSmall}&price<${applyPrice.rangeLarge}`;
+        }
         const res = await getListBooks(sortQuery);
-        console.log(res);
-        console.log(query);
 
         if (res && res.data) {
             setDataBook(res.data.result);
             setTotalPaginate(res.data.meta.total);
         }
+    };
+    const options = category.map((item) => {
+        return {
+            label: item,
+            value: item,
+        };
+    });
+    const handleApply = () => {
+        const apply = {
+            rangeSmall: rangeSmall,
+            rangeLarge: rangeLarge,
+        };
+        setApplyPrice(apply);
+    };
+    function slugify(string) {
+        const a = "àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;";
+        const b = "aaaaaaaaacccddeeeeeeegghiiiiilmnnnnooooooprrsssssttuuuuuuuuuwxyyzzz------";
+        const p = new RegExp(a.split("").join("|"), "g");
+        return string
+            .toString()
+            .toLowerCase()
+            .replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, "a")
+            .replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, "e")
+            .replace(/i|í|ì|ỉ|ĩ|ị/gi, "i")
+            .replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, "o")
+            .replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, "u")
+            .replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, "y")
+            .replace(/đ/gi, "d")
+            .replace(/\s+/g, "-")
+            .replace(p, (c) => b.charAt(a.indexOf(c)))
+            .replace(/&/g, "-and-")
+            .replace(/[^\w\-]+/g, "")
+            .replace(/\-\-+/g, "-")
+            .replace(/^-+/, "")
+            .replace(/-+$/, "");
+    }
+    const handleViewBook = (data) => {
+        const slug = slugify(data.mainText);
+        navigate(`book/${slug}?id=${data._id}`);
     };
     return (
         <div className="home__wrap">
@@ -115,25 +132,29 @@ function Home() {
                         <div className="home__nav">
                             <span>Bộ lọc tìm kiếm</span>
                             <span>Danh mục sản phẩm</span>
-                            <div className="home__check">
-                                {category.length > 0 &&
-                                    category.map((item, index) => {
-                                        return (
-                                            <Checkbox
-                                                onChange={(e) => handleCategory(e.target.checked, { item })}
-                                                key={index}
-                                            >
-                                                {item}
-                                            </Checkbox>
-                                        );
-                                    })}
+                            <div>
+                                <Checkbox.Group
+                                    className="home__check"
+                                    onChange={handleCategory}
+                                    options={options}
+                                ></Checkbox.Group>
                             </div>
                             <div className="wrap__input">
-                                <Input placeholder="Input a number" maxLength={16} />
+                                <InputNumber
+                                    type="number"
+                                    defaultValue={0}
+                                    onChange={(value) => setRangeSmall(value)}
+                                />
                                 <span> - </span>
-                                <Input placeholder="Input a number" maxLength={16} />
+
+                                <InputNumber
+                                    type="number"
+                                    defaultValue={0}
+                                    onChange={(value) => setRangeLarge(value)}
+                                />
                             </div>
-                            <Button style={{ marginTop: 10 }} type="primary">
+
+                            <Button onClick={handleApply} style={{ marginTop: 10 }} type="primary">
                                 Apply
                             </Button>
                             <div>
@@ -159,11 +180,15 @@ function Home() {
                                 defaultActiveKey="1"
                                 items={items}
                             />
-                            <div style={{ display: "flex", gap: 10 }}>
+                            <div className="content__wrap">
                                 {dataBook.length > 0 &&
                                     dataBook.map((data) => {
                                         return (
-                                            <div key={data._id} className="content__item">
+                                            <div
+                                                onClick={() => handleViewBook(data)}
+                                                key={data._id}
+                                                className="content__item"
+                                            >
                                                 <img
                                                     className="content__image"
                                                     src={`http://localhost:8080/images/book/${data.thumbnail}`}
