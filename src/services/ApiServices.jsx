@@ -66,3 +66,6 @@ export const apiEditBook = (id, thumbnail, slider, mainText, author, price, sold
 export const deleteBook = (id) => {
     return instance.delete(`/v1/book/${id}`);
 };
+export const getPageBookById = (id) => {
+    return instance.get(`v1/book/${id}`);
+};

@@ -124,6 +124,9 @@ function Home() {
         const slug = slugify(data.mainText);
         navigate(`book/${slug}?id=${data._id}`);
     };
+    function currencyFormat(num) {
+        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + " VND";
+    }
     return (
         <div className="home__wrap">
             <Form>
@@ -195,7 +198,7 @@ function Home() {
                                                     alt="books"
                                                 />
                                                 <span className="content__text">{data.mainText}</span>
-                                                <span style={{ width: "100%" }}>{data.price} VND</span>
+                                                <span style={{ width: "100%" }}>{currencyFormat(+data.price)} VND</span>
                                                 <div className="wrap__rate">
                                                     <Rate
                                                         style={{
