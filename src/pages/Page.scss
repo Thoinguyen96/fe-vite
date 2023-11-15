@@ -377,3 +377,22 @@
         padding: 0 5px;
     }
 }
+.wrap__detail-cart {
+    width: 500px;
+    background-color: #55b7b7;
+}
+.wrap__item-cart {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+    .image__item-cart {
+        width: 50px;
+        height: 40px;
+    }
+}
+.ant-dropdown-menu {
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: auto;
+}
