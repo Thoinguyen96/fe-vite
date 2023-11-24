@@ -8,7 +8,7 @@ import { useRef } from "react";
 import LoadingBookPage from "./loadingBookPage/LoadingBookPage";
 import { getPageBookById } from "../../../../services/ApiServices";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { doAddCart } from "../../../../redux/orderSlice/OrderSlice";
 import { useDispatch } from "react-redux";
 // import stylesheet if you're not already using CSS @import
@@ -21,6 +21,7 @@ function BookPage() {
     let location = useLocation();
     const id = location.search.slice(4);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handlePreviewImageBook = () => {
         setCurrentIndex(refGallery?.current?.getCurrentIndex() ?? 0);
         setIsModalOpen(true);
@@ -130,7 +131,9 @@ function BookPage() {
                                         <span onClick={handleAddCart} className="cart">
                                             Add cart
                                         </span>
-                                        <span className="buy">Buy now</span>
+                                        <span onClick={() => navigate("/order")} className="buy">
+                                            Buy now
+                                        </span>
                                     </div>
                                 </div>
                             </Col>

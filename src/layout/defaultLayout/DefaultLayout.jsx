@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "../../pages/header/Header";
 import Footer from "../../pages/footer/Footer";
 
-function DefaultLayout({ children }) {
+function DefaultLayout() {
     return (
         <div>
             <Header />

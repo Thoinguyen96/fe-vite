@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Contact from "./pages/contact/Contact";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
 import Home from "./pages/home/Home";
@@ -16,6 +15,7 @@ import LayoutAdmin from "./layout/layoutAdmin/LayoutAdmin";
 import User from "./pages/admin/user/User";
 import Books from "./pages/admin/books/Books";
 import BookPage from "./pages/admin/books/bookPage/BookPage";
+import Order from "./pages/order/Order";
 
 export default function App() {
     const isAuthentication = useSelector((state) => state.account.authentically);
@@ -46,16 +46,18 @@ export default function App() {
                     index: true,
                     element: <Home />,
                 },
-                {
-                    path: "contact",
-                    element: <Contact />,
-                },
+
                 {
                     path: "book/:slug",
                     element: <BookPage />,
                 },
+                {
+                    path: "order",
+                    element: <Order />,
+                },
             ],
         },
+
         {
             path: "admin",
             element: <LayoutAdmin />,

@@ -1,12 +1,13 @@
 import Search from "../search/Search";
-import { HomeOutlined, ShoppingCartOutlined, DownOutlined } from "@ant-design/icons";
+import { HomeOutlined, ShoppingCartOutlined, DownOutlined, UserOutlined } from "@ant-design/icons";
 import logoTiki from "../../assets/image/logoTIKI.png";
-import { Space, Dropdown, Col, Row, Button, Badge, Skeleton } from "antd";
+import { Space, Dropdown, Col, Row, Button, Badge, theme, Divider } from "antd";
 import LogOut from "../logout/LogOut";
 import { useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import InfoUser from "../admin/user/infoUser/InfoUser";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+const { useToken } = theme;
 function Header() {
     const cartQuantity = useSelector((state) => state.order.cart.length);
     const dataCart = useSelector((state) => state.order.cart);
@@ -17,7 +18,15 @@ function Header() {
         setOpen(true);
     };
     const navigate = useNavigate();
-
+    const { token } = useToken();
+    const contentStyle = {
+        backgroundColor: token.colorBgElevated,
+        borderRadius: token.borderRadiusLG,
+        boxShadow: token.boxShadowSecondary,
+    };
+    const menuStyle = {
+        boxShadow: "none",
+    };
     const items = [
         {
             label: (
@@ -42,65 +51,38 @@ function Header() {
             key: "admin",
         });
     }
+    const data = dataCart.map((d) => {
+        return {
+            key: d._id,
+            label: (
+                <div>
+                    <div className="wrap__labelItem" key={d._id}>
+                        <a
+                            className="wrap__item-cart"
+                            target="_blank"
+                            onClick={() => handleReturnInfoCart(d.detail)}
+                            rel="noopener noreferrer"
+                        >
+                            <img
+                                className="image__item-cart"
+                                src={"http://localhost:8080/images/book/" + d.detail.thumbnail}
+                                alt="book"
+                            />
+                            <span style={{ maxWidth: "63%" }}> {d.detail.mainText}</span>
+                            <span style={{ marginLeft: "auto" }}>Price {d.detail.price}</span>
+                        </a>
+                    </div>
+                </div>
+            ),
+        };
+    });
 
-    const itemsCart = [
-        {
-            key: "1",
-            type: "group",
-            label: <span style={{ color: "black", fontWeight: 500 }}> Product in cart</span>,
-            children: dataCart.map((d) => {
-                return {
-                    key: d.id,
-                    label: (
-                        <div>
-                            <a
-                                className="wrap__item-cart"
-                                target="_blank"
-                                onClick={() => handleReturnInfoCart(d.detail)}
-                                rel="noopener noreferrer"
-                            >
-                                <img
-                                    className="image__item-cart"
-                                    src={"http://localhost:8080/images/book/" + d.detail.thumbnail}
-                                    alt="book"
-                                />
-                                <span> {d.detail.mainText}</span>
-                                <span style={{ marginLeft: "auto" }}>Price {d.detail.price}</span>
-                            </a>
-                        </div>
-                    ),
-                };
-            }),
-        },
-    ];
-
-    function slugify(string) {
-        const a = "àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;";
-        const b = "aaaaaaaaacccddeeeeeeegghiiiiilmnnnnooooooprrsssssttuuuuuuuuuwxyyzzz------";
-        const p = new RegExp(a.split("").join("|"), "g");
-        return string
-            .toString()
-            .toLowerCase()
-            .replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, "a")
-            .replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, "e")
-            .replace(/i|í|ì|ỉ|ĩ|ị/gi, "i")
-            .replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, "o")
-            .replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, "u")
-            .replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, "y")
-            .replace(/đ/gi, "d")
-            .replace(/\s+/g, "-")
-            .replace(p, (c) => b.charAt(a.indexOf(c)))
-            .replace(/&/g, "-and-")
-            .replace(/[^\w\-]+/g, "")
-            .replace(/\-\-+/g, "-")
-            .replace(/^-+/, "")
-            .replace(/-+$/, "");
-    }
-    const handleReturnInfoCart = (data) => {
-        const slug = slugify(data.mainText);
-        navigate(`book/${slug}?id=${data._id}`);
+    const handleReturnInfoCart = () => {
+        navigate("/order");
     };
-
+    const handleViewCart = () => {
+        navigate("/order");
+    };
     return (
         <div className="header__wrapper">
             <Row>
@@ -119,7 +101,7 @@ function Header() {
                             </div>
 
                             <Dropdown
-                                menu={{ items: itemsCart }}
+                                menu={{ items: data }}
                                 placement="bottomRight"
                                 arrow
                                 style={{
@@ -127,6 +109,33 @@ function Header() {
                                     fontSize: "20px",
                                     width: "30%",
                                 }}
+                                dropdownRender={(menu) => (
+                                    <div style={contentStyle}>
+                                        {React.cloneElement(menu, {
+                                            style: menuStyle,
+                                        })}
+
+                                        <Space
+                                            style={{
+                                                padding: 8,
+                                                display: "block",
+                                            }}
+                                        >
+                                            {data.length > 0 ? (
+                                                <Button
+                                                    onClick={handleViewCart}
+                                                    style={{ marginLeft: "auto", display: "flex" }}
+                                                    type="primary"
+                                                    danger
+                                                >
+                                                    View cart
+                                                </Button>
+                                            ) : (
+                                                <div>Giỏ hàng trống</div>
+                                            )}
+                                        </Space>
+                                    </div>
+                                )}
                             >
                                 <div>
                                     <Badge count={cartQuantity > 0 ? cartQuantity : 0} size="small">
