@@ -208,7 +208,7 @@ function User() {
                     pageSizeOptions: [5, 10, 20, 40, 60, 80, 100],
                 }}
             />
-            <InfoUser open={open} setOpen={setOpen} infoUser={infoUser} />
+            <InfoUser open={open} setOpen={setOpen} infoUser={infoUser} setInfoUser={setInfoUser} />
             <ModalCreateUser
                 isModalCreateOpen={isModalCreateOpen}
                 setIsModalCreateOpen={setIsModalCreateOpen}

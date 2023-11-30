@@ -1,9 +1,11 @@
-import { InputNumber, Row, Col, Button, Divider, Empty, Steps, Form, Input } from "antd";
+import { InputNumber, Row, Col, Button, Divider, Empty, Steps, Form, Input, message } from "antd";
 import { DeleteOutlined, CheckOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { doDeleteProduct, doUpdateCart } from "../../redux/orderSlice/OrderSlice";
+import { doDeleteProduct, doResetCart, doUpdateCart } from "../../redux/orderSlice/OrderSlice";
 import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
+import { createOrder } from "../../services/ApiServices";
+import { useNavigate } from "react-router-dom";
 
 function Order() {
     const dataRole = useSelector((state) => state.order.cart);
@@ -11,9 +13,9 @@ function Order() {
     const [current, setCurrent] = useState("");
     const [totalProduct, setDataProduct] = useState([]);
     const dispatch = useDispatch();
-    console.log(dataUser.phone);
+    const navigate = useNavigate();
     const [form] = Form.useForm();
-
+    console.log(dataRole);
     useEffect(() => {
         if (dataRole.length > 0) {
             const total = dataRole?.map((number) => {
@@ -41,13 +43,34 @@ function Order() {
         }
         setCurrent(2);
     };
+
     const handleOrder = () => {
         form.submit();
-        setCurrent(3);
     };
 
-    const onFinish = (values) => {
-        console.log(values);
+    const onFinish = async (values) => {
+        console.log(values.fullName);
+        const data = {
+            name: values.fullName,
+            address: values.address,
+            phone: values.phone,
+            totalPrice: totalProduct,
+
+            detail: dataRole.map((item) => {
+                return {
+                    bookName: item.detail.mainText,
+                    quantity: item.quantity,
+                    _id: item._id,
+                };
+            }),
+        };
+        const res = await createOrder(data);
+        if (res && res.data) {
+            dispatch(doResetCart());
+            setCurrent(3);
+        } else {
+            message(res.message[0]);
+        }
     };
     return (
         <>
@@ -126,6 +149,7 @@ function Order() {
                                                 </div>
 
                                                 <InputNumber
+                                                    className="product__quantity"
                                                     min={1}
                                                     max={item.detail.quantity}
                                                     defaultValue={item.quantity}
@@ -311,11 +335,37 @@ function Order() {
                                     layout="horizontal"
                                     style={{ maxWidth: 600 }}
                                 >
-                                    <Form.Item initialvalues={dataUser?.fullName} name="fullName" label="Name">
-                                        <Input defaultValue={dataUser?.fullName} />
+                                    <Form.Item
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Please input your username!",
+                                            },
+                                        ]}
+                                        initialValue={dataUser?.fullName}
+                                        name="fullName"
+                                        label="Name"
+                                    >
+                                        <Input />
                                     </Form.Item>
-                                    <Form.Item initialvalues={dataUser?.phone} name="phone" label="Phone">
+                                    <Form.Item
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Please input your username!",
+                                            },
+                                        ]}
+                                        initialValue={dataUser?.phone}
+                                        name="phone"
+                                        label="Phone"
+                                    >
                                         <InputNumber
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "Please input your username!",
+                                                },
+                                            ]}
                                             value={dataUser?.phone}
                                             type="number"
                                             style={{
@@ -372,6 +422,9 @@ function Order() {
                                 <h2>Order Success</h2>
                                 <CheckOutlined />
                             </div>
+                            <Button onClick={() => navigate("/history")} style={{ display: "flex", margin: "0 auto" }}>
+                                watch history
+                            </Button>
                         </Col>
                     </Row>
                 </div>

@@ -61,9 +61,12 @@ export const orderSlice = createSlice({
                 state.cart = cart;
             }
         },
+        doResetCart: (state, action) => {
+            state.cart = [];
+        },
     },
 
     extraReducers: () => {},
 });
-export const { doAddCart, doUpdateCart, doDeleteProduct } = orderSlice.actions;
+export const { doAddCart, doUpdateCart, doDeleteProduct, doResetCart } = orderSlice.actions;
 export default orderSlice.reducer;

@@ -29,12 +29,12 @@ function Header() {
     };
     const items = [
         {
-            label: (
-                <a onClick={() => handleInfoUser()} href="#!">
-                    Info account
-                </a>
-            ),
+            label: <span onClick={() => handleInfoUser()}>Info account</span>,
             key: "info",
+        },
+        {
+            label: <span onClick={() => navigate("history")}>History cart</span>,
+            key: "History",
         },
         {
             label: <LogOut />,
@@ -52,6 +52,7 @@ function Header() {
         });
     }
     const data = dataCart.map((d) => {
+        console.log(d.detail.thumbnail);
         return {
             key: d._id,
             label: (
@@ -229,14 +230,54 @@ function Header() {
                             }}
                         >
                             <Search />
-                            <Badge count={4} size="small">
-                                <ShoppingCartOutlined
-                                    style={{
-                                        color: "#1677ff",
-                                        fontSize: "20px",
-                                    }}
-                                />
-                            </Badge>
+                            <Dropdown
+                                menu={{ items: data }}
+                                placement="bottomRight"
+                                arrow
+                                style={{
+                                    color: "#1677ff",
+                                    fontSize: "20px",
+                                    width: "30%",
+                                }}
+                                dropdownRender={(menu) => (
+                                    <div style={contentStyle}>
+                                        {React.cloneElement(menu, {
+                                            style: menuStyle,
+                                        })}
+
+                                        <Space
+                                            style={{
+                                                padding: 8,
+                                                display: "block",
+                                            }}
+                                        >
+                                            {data.length > 0 ? (
+                                                <Button
+                                                    onClick={handleViewCart}
+                                                    style={{ marginLeft: "auto", display: "flex" }}
+                                                    type="primary"
+                                                    danger
+                                                >
+                                                    View cart
+                                                </Button>
+                                            ) : (
+                                                <div>Giỏ hàng trống</div>
+                                            )}
+                                        </Space>
+                                    </div>
+                                )}
+                            >
+                                <div>
+                                    <Badge count={cartQuantity > 0 ? cartQuantity : 0} size="small">
+                                        <ShoppingCartOutlined
+                                            style={{
+                                                color: "#1677ff",
+                                                fontSize: "20px",
+                                            }}
+                                        />
+                                    </Badge>
+                                </div>
+                            </Dropdown>
                         </div>
                         <InfoUser infoUser={dataUser} open={open} setOpen={setOpen} />
                     </div>

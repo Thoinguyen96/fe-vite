@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 const initialState = {
     authentically: false,
@@ -39,11 +39,22 @@ export const accountSlice = createSlice({
             };
             state.authentically = false;
         },
+        doUpdateUser: (state, action) => {
+            localStorage.removeItem("access_token");
+
+            if (state.user.id === action.payload.id) {
+                state.user.avatar = action.payload.avatar;
+                state.user.phone = action.payload.phone;
+                state.user.fullName = action.payload.fullName;
+                state.isLoading = false;
+                state.authentically = true;
+            }
+        },
     },
 
     extraReducers: (builder) => {},
 });
 
-export const { doAccountLogin, doFetchUser, doLogoutUser } = accountSlice.actions;
+export const { doAccountLogin, doFetchUser, doLogoutUser, doUpdateUser } = accountSlice.actions;
 
 export default accountSlice.reducer;

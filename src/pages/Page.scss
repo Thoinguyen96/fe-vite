@@ -332,12 +332,12 @@
 }
 .wrap__process {
     background-color: #fff;
+    padding: 5px;
 }
 .wrapper__order {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-    gap: 10px 10px;
     grid-template-areas: ". .";
 
     padding: 10px 0;
@@ -351,6 +351,7 @@
         grid-template-columns: auto 100px 100px 100px 25px;
         column-gap: 24px;
         align-items: center;
+        padding: 5px;
         .content__left {
             display: flex;
             padding: 5px;
@@ -392,9 +393,9 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-    gap: 10px 10px;
     grid-template-areas: ". .";
     background-color: #f0f0f0;
+    grid-auto-flow: column;
 
     padding: 10px 0;
     .wrap__oder-left {
@@ -446,7 +447,7 @@
     top: 106px;
     background-color: #fff;
     margin: 10px 0;
-    gap: 33px;
+    gap: 10px;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -464,8 +465,8 @@
 
 .wrapper__oder-all {
     width: 100%;
-    margin-top: 94px;
-    padding: 20px 100px;
+    margin-top: 122px;
+    padding: 20px 10px;
     background: rgb(240, 240, 240);
 }
 @media (min-width: 1024px) {
@@ -506,12 +507,16 @@
         justify-content: space-between;
         background-color: #f0f0f0;
         width: 100%;
-        margin-top: 145px;
-        padding: 10px 20px;
         .gutter-row {
             width: 100%;
             background-color: #fff;
         }
+    }
+    .wrapper__oder-all {
+        width: 100%;
+        margin-top: 122px;
+        padding: 20px 10px;
+        background: rgb(240, 240, 240);
     }
 }
 
@@ -541,11 +546,19 @@
         margin: 0 auto;
         padding: 0 5px;
     }
-
+    .wrapper__order .wrap__oder-left {
+        grid-template-columns: auto auto auto auto auto;
+    }
+    .wrapper__order2 .wrap__oder-left {
+        grid-template-columns: auto auto auto auto auto;
+    }
     .home__wrap {
         padding: 0 5px;
     }
     .book__wrap {
         padding: 0 5px;
+    }
+    .product__quantity {
+        width: 30px;
     }
 }

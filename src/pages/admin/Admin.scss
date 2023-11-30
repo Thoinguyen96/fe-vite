@@ -17,7 +17,9 @@
 .wrap__view-avatar {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+    gap: 10px;
+    padding: 10px;
     .view__avatar {
         display: block;
         border-radius: 50%;

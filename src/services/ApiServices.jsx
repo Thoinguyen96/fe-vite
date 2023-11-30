@@ -61,11 +61,34 @@ export const createBooks = (thumbnail, slider, mainText, author, price, sold, qu
     return instance.post(`v1/book`, { thumbnail, slider, mainText, author, price, sold, quantity, category });
 };
 export const apiEditBook = (id, thumbnail, slider, mainText, author, price, sold, quantity, category) => {
-    return instance.put(`/v1/book/${id}`, { thumbnail, slider, mainText, author, price, sold, quantity, category });
+    return instance.put(`v1/book/${id}`, { thumbnail, slider, mainText, author, price, sold, quantity, category });
 };
 export const deleteBook = (id) => {
-    return instance.delete(`/v1/book/${id}`);
+    return instance.delete(`v1/book/${id}`);
 };
 export const getPageBookById = (id) => {
     return instance.get(`v1/book/${id}`);
+};
+export const createOrder = (data) => {
+    return instance.post("v1/order", { ...data });
+};
+export const getApiHistory = () => {
+    return instance.get("v1/history");
+};
+export const changePassword = (email, oldpass, newpass) => {
+    return instance.post(`v1/user/change-password`, { email, oldpass, newpass });
+};
+
+export const callUploadAvatar = (fileImg) => {
+    const bodyFormData = new FormData();
+    bodyFormData.append("fileImg", fileImg);
+    return instance.post("v1/file/upload", bodyFormData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "upload-type": "avatar",
+        },
+    });
+};
+export const uploadAvatar = (fullName, phone, avatar, _id) => {
+    return instance.put(`v1/user`, { fullName, phone, avatar, _id });
 };

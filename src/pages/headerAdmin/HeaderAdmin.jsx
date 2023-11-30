@@ -10,6 +10,7 @@ import InfoUser from "../admin/user/infoUser/InfoUser";
 function HeaderAdmin(props) {
     const isAuthentication = useSelector((state) => state.account.authentically);
     const dataUser = useSelector((state) => state.account.user);
+
     const { toggleCollapsed } = props;
     const [open, setOpen] = useState(false);
     const handleInfoUser = () => {
@@ -29,7 +30,6 @@ function HeaderAdmin(props) {
             key: "logout",
         },
     ];
-
     return (
         <div className="headerAdmin__wrap">
             <MenuFoldOutlined onClick={toggleCollapsed} style={{ fontSize: 30, padding: 10 }} />
@@ -43,7 +43,11 @@ function HeaderAdmin(props) {
                             {isAuthentication === true ? (
                                 <div className="gap__icon">
                                     <div>
-                                        <img className="image" src={dataUser.avatar} alt="avatar" />
+                                        <img
+                                            className="image"
+                                            src={`http://localhost:8080/images/avatar/${dataUser?.avatar}`}
+                                            alt="avatar"
+                                        />
                                     </div>
                                     <span>{dataUser.fullName}</span>
                                 </div>

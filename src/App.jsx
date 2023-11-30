@@ -16,6 +16,7 @@ import User from "./pages/admin/user/User";
 import Books from "./pages/admin/books/Books";
 import BookPage from "./pages/admin/books/bookPage/BookPage";
 import Order from "./pages/order/Order";
+import History from "./pages/admin/histoty/History";
 
 export default function App() {
     const isAuthentication = useSelector((state) => state.account.authentically);
@@ -54,6 +55,10 @@ export default function App() {
                 {
                     path: "order",
                     element: <Order />,
+                },
+                {
+                    path: "history",
+                    element: <History />,
                 },
             ],
         },
