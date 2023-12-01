@@ -1,18 +1,19 @@
 import Search from "../search/Search";
-import { HomeOutlined, ShoppingCartOutlined, DownOutlined, UserOutlined } from "@ant-design/icons";
+import { HomeOutlined, ShoppingCartOutlined, DownOutlined } from "@ant-design/icons";
 import logoTiki from "../../assets/image/logoTIKI.png";
-import { Space, Dropdown, Col, Row, Button, Badge, theme, Divider } from "antd";
+import { Space, Dropdown, Col, Row, Button, Badge, theme } from "antd";
 import LogOut from "../logout/LogOut";
 import { useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import InfoUser from "../admin/user/infoUser/InfoUser";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 const { useToken } = theme;
 function Header() {
     const cartQuantity = useSelector((state) => state.order.cart.length);
     const dataCart = useSelector((state) => state.order.cart);
     const isAuthentication = useSelector((state) => state.account.authentically);
     const dataUser = useSelector((state) => state.account.user);
+    console.log(dataUser.avatar);
     const [open, setOpen] = useState(false);
     const handleInfoUser = () => {
         setOpen(true);
@@ -66,7 +67,7 @@ function Header() {
                         >
                             <img
                                 className="image__item-cart"
-                                src={"http://localhost:8080/images/book/" + d.detail.thumbnail}
+                                src={`${import.meta.env.VITE_BACKEND_URL}/images/book/${d.detail.thumbnail}`}
                                 alt="book"
                             />
                             <span style={{ maxWidth: "63%" }}> {d.detail.mainText}</span>
@@ -156,7 +157,13 @@ function Header() {
                                         <Space>
                                             <div className="gap__icon">
                                                 <div>
-                                                    <img className="image" src={dataUser.avatar} alt="avatar" />
+                                                    <img
+                                                        className="image"
+                                                        src={`${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
+                                                            dataUser?.avatar
+                                                        }`}
+                                                        alt="avatar"
+                                                    />
                                                 </div>
                                                 <span>{dataUser.fullName}</span>
                                                 <DownOutlined style={{ width: 12, height: 12 }} />
@@ -201,7 +208,13 @@ function Header() {
                                             <Space>
                                                 <div className="gap__icon">
                                                     <div>
-                                                        <img className="image" src={dataUser.avatar} alt="avatar" />
+                                                        <img
+                                                            className="image"
+                                                            src={`${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
+                                                                dataUser?.avatar
+                                                            }`}
+                                                            alt="avatar"
+                                                        />
                                                     </div>
                                                     <span>{dataUser.fullName}</span>
                                                     <DownOutlined style={{ width: 12, height: 12 }} />

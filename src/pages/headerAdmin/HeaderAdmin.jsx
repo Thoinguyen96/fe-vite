@@ -45,7 +45,9 @@ function HeaderAdmin(props) {
                                     <div>
                                         <img
                                             className="image"
-                                            src={`http://localhost:8080/images/avatar/${dataUser?.avatar}`}
+                                            src={`${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
+                                                dataUser?.avatar
+                                            }`}
                                             alt="avatar"
                                         />
                                     </div>

@@ -8,7 +8,7 @@ const InfoUser = (props) => {
     const { open, setOpen, infoUser } = props;
     const [key, setKey] = useState(1);
     const [avatar, setAvatar] = useState(
-        infoUser?.avatar ? `http://localhost:8080/images/avatar/${infoUser?.avatar}` : ""
+        infoUser?.avatar ? `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${infoUser?.avatar}` : ""
     );
     const [infoAvatar, setInfoAvatar] = useState("");
     const dispatch = useDispatch();
