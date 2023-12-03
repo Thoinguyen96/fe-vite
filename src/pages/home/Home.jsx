@@ -194,7 +194,9 @@ function Home() {
                                             >
                                                 <img
                                                     className="content__image"
-                                                    src={`http://localhost:8080/images/book/${data.thumbnail}`}
+                                                    src={`${import.meta.env.VITE_BACKEND_URL}/images/book/${
+                                                        data.thumbnail
+                                                    }`}
                                                     alt="books"
                                                 />
                                                 <span className="content__text">{data.mainText}</span>

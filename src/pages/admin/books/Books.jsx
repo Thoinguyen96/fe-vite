@@ -235,14 +235,20 @@ function Books() {
                 }
             >
                 <div style={{ display: "flex", gap: 30 }}>
-                    <Image width={150} src={"http://localhost:8080/images/book/" + dataInfoBooks.thumbnail} />
+                    <Image
+                        width={150}
+                        src={`${import.meta.env.VITE_BACKEND_URL}/images/book/` + dataInfoBooks.thumbnail}
+                    />
                     {dataInfoBooks.slider &&
                         dataInfoBooks.slider.length > 0 &&
                         dataInfoBooks.slider.map((image) => {
                             console.log(image);
                             return (
                                 <>
-                                    <Image width={150} src={"http://localhost:8080/images/book/" + image} />
+                                    <Image
+                                        width={150}
+                                        src={`${import.meta.env.VITE_BACKEND_URL}/images/book/` + image}
+                                    />
                                 </>
                             );
                         })}

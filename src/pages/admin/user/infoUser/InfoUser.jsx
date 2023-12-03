@@ -84,7 +84,7 @@ const InfoUser = (props) => {
         const res = await callUploadAvatar(file.file);
         if (res && res.data) {
             console.log(res);
-            const url = `http://localhost:8080/images/avatar/${res.data.fileUploaded}`;
+            const url = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${res.data.fileUploaded}`;
             setInfoAvatar({ file: file.file, avatar: res.data.fileUploaded });
             setAvatar(url);
         } else {

@@ -43,8 +43,8 @@ function BookPage() {
     const refGallery = useRef(null);
     const images = [
         {
-            original: `http://localhost:8080/images/book/${data?.thumbnail}`,
-            thumbnail: `http://localhost:8080/images/book/${data?.thumbnail}`,
+            original: `${import.meta.env.VITE_BACKEND_URL}/images/book/${data?.thumbnail}`,
+            thumbnail: `${import.meta.env.VITE_BACKEND_URL}/images/book/${data?.thumbnail}`,
         },
     ];
     const handleUp = () => {

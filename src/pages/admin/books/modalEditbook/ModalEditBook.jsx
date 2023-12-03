@@ -40,7 +40,7 @@ const ModalEditBook = (props) => {
                     uid: uuidv4(),
                     name: dataEditBook.thumbnail,
                     status: "done",
-                    url: `http://localhost:8080/images/book/${dataEditBook.thumbnail}`,
+                    url: `${import.meta.env.VITE_BACKEND_URL}/images/book/${dataEditBook.thumbnail}`,
                 },
             ];
 
@@ -49,7 +49,7 @@ const ModalEditBook = (props) => {
                     uid: uuidv4(),
                     name: item,
                     status: "done",
-                    url: `http://localhost:8080/images/book/${item}`,
+                    url: `${import.meta.env.VITE_BACKEND_URL}/images/book/${item}`,
                 };
             });
             const init = {

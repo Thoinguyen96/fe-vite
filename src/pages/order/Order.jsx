@@ -127,7 +127,9 @@ function Order() {
                                                 <div className="content__left">
                                                     <img
                                                         style={{ width: 60, height: 120, objectFit: "cover" }}
-                                                        src={`http://localhost:8080/images/book/${item?.detail?.thumbnail}`}
+                                                        src={`${import.meta.env.VITE_BACKEND_URL}/images/book/${
+                                                            item?.detail?.thumbnail
+                                                        }`}
                                                         alt="book"
                                                     />
                                                     <div
@@ -260,7 +262,9 @@ function Order() {
                                                 <div className="content__left">
                                                     <img
                                                         style={{ width: 60, height: 120, objectFit: "cover" }}
-                                                        src={`http://localhost:8080/images/book/${item?.detail.thumbnail}`}
+                                                        src={`${import.meta.env.VITE_BACKEND_URL}/images/book/${
+                                                            item?.detail.thumbnail
+                                                        }`}
                                                         alt="book"
                                                     />
                                                     <div
