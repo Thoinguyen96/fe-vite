@@ -16,7 +16,7 @@
     justify-content: center;
     height: 100vh;
     .register__form {
-        height: 540px;
+        height: 647px;
         display: flex;
         flex-direction: column;
         padding: 50px;
@@ -29,6 +29,12 @@
             text-align: center;
             margin-bottom: 30px;
         }
+        .login__suggest {
+            display: flex;
+            gap: 5px;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
     }
 }
 .wrap__login {
@@ -38,7 +44,7 @@
     justify-content: center;
     height: 100vh;
     .form__login {
-        height: 400px;
+        height: 445px;
         padding: 50px;
         border: 1px solid #d3d6db;
         border-radius: 8px;
@@ -517,6 +523,16 @@
         margin-top: 122px;
         padding: 20px 10px;
         background: rgb(240, 240, 240);
+    }
+    .wrap__login {
+        .form__login {
+            width: 90%;
+        }
+    }
+    .register__wrap {
+        .register__form {
+            width: 90%;
+        }
     }
 }
 

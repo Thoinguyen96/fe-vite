@@ -100,6 +100,10 @@ function Register() {
                         <Button type="primary" htmlType="submit" loading={loading}>
                             Submit
                         </Button>
+                        <div className="login__suggest">
+                            <span className="title">Bạn đã có tài khoản?</span>
+                            <a href="/login">Đăng nhập</a>
+                        </div>
                     </Form.Item>
                 </Form>
             </div>
