@@ -104,6 +104,7 @@ function Register() {
                             <span className="title">Bạn đã có tài khoản?</span>
                             <a href="/login">Đăng nhập</a>
                         </div>
+                        <a href="/">Về trang chủ</a>
                     </Form.Item>
                 </Form>
             </div>

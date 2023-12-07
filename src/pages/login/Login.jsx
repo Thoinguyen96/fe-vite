@@ -92,6 +92,7 @@ function Login() {
                         <span className="title">Bạn chưa có tài khoản?</span>
                         <a href="/register">Đăng ký</a>
                     </div>
+                    <a href="/">Về trang chủ</a>
                 </Form>
             </div>
         </div>

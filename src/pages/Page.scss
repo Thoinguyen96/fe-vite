@@ -16,10 +16,10 @@
     justify-content: center;
     height: 100vh;
     .register__form {
-        height: 647px;
+        min-height: 605px;
         display: flex;
         flex-direction: column;
-        padding: 50px;
+        padding: 20px 50px 0 50px;
         border: 1px solid #d3d6db;
         border-radius: 8px;
         background-color: #fff;
@@ -44,8 +44,8 @@
     justify-content: center;
     height: 100vh;
     .form__login {
-        height: 445px;
-        padding: 50px;
+        min-height: 438px;
+        padding: 20px 50px 0 50px;
         border: 1px solid #d3d6db;
         border-radius: 8px;
         background-color: #fff;
@@ -54,6 +54,8 @@
     .login__suggest {
         display: flex;
         gap: 5px;
+        justify-content: space-between;
+        margin-bottom: 5px;
     }
 }
 .wrapper__app {
