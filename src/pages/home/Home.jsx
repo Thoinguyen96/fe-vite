@@ -16,17 +16,12 @@ function Home() {
     const [rangeLarge, setRangeLarge] = useState("");
     const [applyPrice, setApplyPrice] = useState("");
     const [open, setOpen] = useState(false);
-    const [size, setSize] = useState(378);
     const navigate = useNavigate();
 
     const showDefaultDrawer = () => {
-        setSize("default");
         setOpen(true);
     };
-    const showLargeDrawer = () => {
-        setSize("large");
-        setOpen(true);
-    };
+
     const onClose = () => {
         setOpen(false);
     };
@@ -122,6 +117,7 @@ function Home() {
             rangeLarge: rangeLarge,
         };
         setApplyPrice(apply);
+        setOpen(false);
     };
     function slugify(string) {
         const a = "àáäâãåăæąçćčđďèéěėëêęğǵḧìíïîįłḿǹńňñòóöôœøṕŕřßşśšșťțùúüûǘůűūųẃẍÿýźžż·/_,:;";
@@ -216,7 +212,7 @@ function Home() {
                                     defaultActiveKey="1"
                                     items={items}
                                 />
-                                <a href="#!">
+                                <a onClick={showDefaultDrawer} href="#!">
                                     Lọc <FilterOutlined />
                                 </a>
                             </div>
@@ -268,9 +264,9 @@ function Home() {
             </Form>
 
             <Drawer
-                title={`${size} Drawer`}
+                title={`Filter`}
                 placement="right"
-                size={size}
+                width={"70%"}
                 onClose={onClose}
                 open={open}
                 extra={
@@ -282,9 +278,43 @@ function Home() {
                     </Space>
                 }
             >
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+                <div className="home__nav">
+                    <span>Bộ lọc tìm kiếm</span>
+                    <span>Danh mục sản phẩm</span>
+                    <div>
+                        <Checkbox.Group
+                            className="home__check"
+                            onChange={handleCategory}
+                            options={options}
+                        ></Checkbox.Group>
+                    </div>
+                    <div className="wrap__input">
+                        <InputNumber type="number" defaultValue={0} onChange={(value) => setRangeSmall(value)} />
+                        <span> - </span>
+
+                        <InputNumber type="number" defaultValue={0} onChange={(value) => setRangeLarge(value)} />
+                    </div>
+
+                    <Button onClick={handleApply} style={{ marginTop: 10 }} type="primary">
+                        Apply
+                    </Button>
+                    <br />
+                    <br />
+                    <div>
+                        <span>Evaluate</span>
+                        <br />
+                        <Rate style={{ fontSize: "1.2rem" }} defaultValue={5} />
+                        <br />
+                        <Rate style={{ fontSize: "1.2rem" }} allowClear={false} defaultValue={4} />
+                        <span className="ant-rate-text">Above</span>
+                        <Rate style={{ fontSize: "1.2rem" }} allowClear={false} defaultValue={3} />
+                        <span className="ant-rate-text">Above</span>
+                        <Rate style={{ fontSize: "1.2rem" }} allowClear={false} defaultValue={2} />
+                        <span className="ant-rate-text">Above</span>
+                        <Rate style={{ fontSize: "1.2rem" }} allowClear={false} defaultValue={1} />
+                        <span className="ant-rate-text">Above</span>
+                    </div>
+                </div>
             </Drawer>
         </div>
     );
