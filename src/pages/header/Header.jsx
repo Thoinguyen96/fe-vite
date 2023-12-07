@@ -13,7 +13,6 @@ function Header() {
     const dataCart = useSelector((state) => state.order.cart);
     const isAuthentication = useSelector((state) => state.account.authentically);
     const dataUser = useSelector((state) => state.account.user);
-    console.log(dataUser.avatar);
     const [open, setOpen] = useState(false);
     const handleInfoUser = () => {
         setOpen(true);
@@ -53,7 +52,6 @@ function Header() {
         });
     }
     const data = dataCart.map((d) => {
-        console.log(d.detail.thumbnail);
         return {
             key: d._id,
             label: (

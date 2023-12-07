@@ -185,7 +185,12 @@ function Home() {
                             <div>
                                 <span>Evaluate</span>
                                 <br />
+
                                 <Rate style={{ fontSize: "1.2rem" }} defaultValue={5} />
+                                <span className="ant-rate-text">Above</span>
+
+                                <br />
+
                                 <Rate style={{ fontSize: "1.2rem" }} allowClear={false} defaultValue={4} />
                                 <span className="ant-rate-text">Above</span>
                                 <Rate style={{ fontSize: "1.2rem" }} allowClear={false} defaultValue={3} />

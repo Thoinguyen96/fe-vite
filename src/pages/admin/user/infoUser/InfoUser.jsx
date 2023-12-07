@@ -23,7 +23,6 @@ const InfoUser = (props) => {
         return <h4>Info user</h4>;
     };
     const onFinish = async (values) => {
-        console.log("Success:", values);
         if (values.ConfirmPassword === values.newPassword) {
             if (key === "2") {
                 const res = await changePassword(values.email, values.password, values.newPassword);
@@ -102,7 +101,15 @@ const InfoUser = (props) => {
                     <div className="wrap__view-avatar">
                         <div>
                             <Space direction="vertical" size={16}>
-                                <Avatar size={200} icon={<img className="view__avatar" src={avatar} />} />
+                                <Avatar
+                                    size={200}
+                                    icon={
+                                        <img
+                                            className="view__avatar"
+                                            src={`${import.meta.env.VITE_BACKEND_URL}/images/avatar/${infoUser.avatar}`}
+                                        />
+                                    }
+                                />
                             </Space>
                             <Upload {...propss}>
                                 <Button icon={<UploadOutlined />}>Click to Upload</Button>

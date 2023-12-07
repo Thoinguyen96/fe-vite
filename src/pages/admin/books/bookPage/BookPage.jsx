@@ -47,6 +47,12 @@ function BookPage() {
             thumbnail: `${import.meta.env.VITE_BACKEND_URL}/images/book/${data?.thumbnail}`,
         },
     ];
+    // const images = data.slider.map((item) => {
+    //     return {
+    //         original: `${import.meta.env.VITE_BACKEND_URL}/images/book/${item}`,
+    //         thumbnail: `${import.meta.env.VITE_BACKEND_URL}/images/book/${item}`,
+    //     };
+    // });
     const handleUp = () => {
         if (step >= 1 && step < +data.quantity) {
             setStep(step + 1);
