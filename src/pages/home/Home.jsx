@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import "../Page.scss";
-import { Form, Col, Row, Checkbox, Button, Rate, Tabs, Pagination, InputNumber } from "antd";
+import { Form, Col, Row, Checkbox, Button, Rate, Tabs, Pagination, InputNumber, Drawer, Space } from "antd";
 import { callFetchCategory, getListBooks } from "../../services/ApiServices";
 import { useNavigate } from "react-router-dom";
+import { ArrowUpOutlined, ArrowDownOutlined, FilterOutlined } from "@ant-design/icons";
 function Home() {
     const [category, setCategory] = useState([]);
     const [current, setCurrent] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(window.innerWidth <= 1023 ? 6 : 5);
     const [totalPaginate, setTotalPaginate] = useState([]);
     const [dataBook, setDataBook] = useState([]);
     const [query, setQuery] = useState("");
@@ -14,7 +15,21 @@ function Home() {
     const [rangeSmall, setRangeSmall] = useState("");
     const [rangeLarge, setRangeLarge] = useState("");
     const [applyPrice, setApplyPrice] = useState("");
+    const [open, setOpen] = useState(false);
+    const [size, setSize] = useState(378);
     const navigate = useNavigate();
+
+    const showDefaultDrawer = () => {
+        setSize("default");
+        setOpen(true);
+    };
+    const showLargeDrawer = () => {
+        setSize("large");
+        setOpen(true);
+    };
+    const onClose = () => {
+        setOpen(false);
+    };
     useEffect(() => {
         apiCategoryBook();
         apiListBooksPaginate();
@@ -33,12 +48,22 @@ function Home() {
         },
         {
             key: "sort=price",
-            label: "Low to high price",
+            label: (
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <span>Price</span>
+                    <ArrowUpOutlined />
+                </div>
+            ),
             children: <></>,
         },
         {
             key: "sort=-price",
-            label: "Height to low price",
+            label: (
+                <div style={{ display: "flex", gap: "10px" }}>
+                    <span>Price</span>
+                    <ArrowDownOutlined />
+                </div>
+            ),
             children: <></>,
         },
     ];
@@ -127,11 +152,12 @@ function Home() {
     function currencyFormat(num) {
         return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + " VND";
     }
+
     return (
         <div className="home__wrap">
             <Form>
                 <Row>
-                    <Col span={4}>
+                    <Col xs={0} sm={0} md={0} lg={0} xl={4}>
                         <div className="home__nav">
                             <span>Bộ lọc tìm kiếm</span>
                             <span>Danh mục sản phẩm</span>
@@ -175,14 +201,25 @@ function Home() {
                             </div>
                         </div>
                     </Col>
-                    <Col span={20}>
+                    <Col xs={24} sm={24} md={24} lg={24} xl={20}>
                         <div className="home__content">
-                            <Tabs
-                                onChange={(value) => setQuery(value)}
-                                size="medium"
-                                defaultActiveKey="1"
-                                items={items}
-                            />
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    paddingBottom: "10px",
+                                }}
+                            >
+                                <Tabs
+                                    onChange={(value) => setQuery(value)}
+                                    size="medium"
+                                    defaultActiveKey="1"
+                                    items={items}
+                                />
+                                <a href="#!">
+                                    Lọc <FilterOutlined />
+                                </a>
+                            </div>
                             <div className="content__wrap">
                                 {dataBook.length > 0 &&
                                     dataBook.map((data) => {
@@ -229,6 +266,26 @@ function Home() {
                     </Col>
                 </Row>
             </Form>
+
+            <Drawer
+                title={`${size} Drawer`}
+                placement="right"
+                size={size}
+                onClose={onClose}
+                open={open}
+                extra={
+                    <Space>
+                        <Button onClick={onClose}>Cancel</Button>
+                        <Button type="primary" onClick={onClose}>
+                            OK
+                        </Button>
+                    </Space>
+                }
+            >
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+            </Drawer>
         </div>
     );
 }

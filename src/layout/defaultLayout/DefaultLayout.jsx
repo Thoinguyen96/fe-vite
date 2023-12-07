@@ -4,7 +4,7 @@ import Footer from "../../pages/footer/Footer";
 
 function DefaultLayout() {
     return (
-        <div>
+        <div className="wrapper__home">
             <Header />
             <Outlet />
             <Footer />
