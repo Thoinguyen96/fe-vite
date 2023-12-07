@@ -11,6 +11,10 @@
 }
 .wrapper__home {
     background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 .register__wrap {
     display: flex;
@@ -179,14 +183,18 @@
 .footer_wrap {
     display: block;
     margin-top: 20px;
+    padding: 10px 0;
     text-align: center;
 }
+.filter__product {
+    display: none;
+}
 .home__wrap {
-    height: 100vh;
     margin-top: 100px;
     padding: 0 100px;
     display: flex;
     gap: 5px;
+
     .home__nav {
         margin-top: 10px;
         padding: 5px 10px;
@@ -493,6 +501,12 @@
     .book__wrap {
         padding: 0 5px;
     }
+    // .footer_wrap {
+    //     display: none;
+    // }
+    .filter__product {
+        display: block;
+    }
     .home__wrap {
         padding: 0 5px;
     }
@@ -544,7 +558,6 @@
     }
     .home__wrap {
         .home__content {
-            height: 100vh;
             padding: 10px;
             .content__item {
                 width: calc(50% - 5px);

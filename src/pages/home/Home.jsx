@@ -7,7 +7,7 @@ import { ArrowUpOutlined, ArrowDownOutlined, FilterOutlined } from "@ant-design/
 function Home() {
     const [category, setCategory] = useState([]);
     const [current, setCurrent] = useState(1);
-    const [pageSize, setPageSize] = useState(window.innerWidth <= 1023 ? 6 : 5);
+    const [pageSize, setPageSize] = useState(window.innerWidth <= 1023 ? 8 : 10);
     const [totalPaginate, setTotalPaginate] = useState([]);
     const [dataBook, setDataBook] = useState([]);
     const [query, setQuery] = useState("");
@@ -212,7 +212,7 @@ function Home() {
                                     defaultActiveKey="1"
                                     items={items}
                                 />
-                                <a onClick={showDefaultDrawer} href="#!">
+                                <a className="filter__product" onClick={showDefaultDrawer} href="#!">
                                     Lọc <FilterOutlined />
                                 </a>
                             </div>
