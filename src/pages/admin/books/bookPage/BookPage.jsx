@@ -10,7 +10,7 @@ import { getPageBookById } from "../../../../services/ApiServices";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { doAddCart } from "../../../../redux/orderSlice/OrderSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import stylesheet if you're not already using CSS @import
 function BookPage() {
     const [step, setStep] = useState(1);
@@ -22,23 +22,23 @@ function BookPage() {
     const id = location.search.slice(4);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const handlePreviewImageBook = () => {
-        setCurrentIndex(refGallery?.current?.getCurrentIndex() ?? 0);
-        setIsModalOpen(true);
-    };
+    const authentically = useSelector((state) => state.account.authentically);
+
     useEffect(() => {
         fetListBook();
     }, []);
+
     const fetListBook = async () => {
         setLoadingBook(true);
         const res = await getPageBookById(id);
         if (res && res.data) {
-            setTimeout(() => {
-                // setLoadingBook(false);
-            }, [3000]);
-
             setData(res.data);
         }
+    };
+
+    const handlePreviewImageBook = () => {
+        setCurrentIndex(refGallery?.current?.getCurrentIndex() ?? 0);
+        setIsModalOpen(true);
     };
     const refGallery = useRef(null);
     const images = [
@@ -47,12 +47,13 @@ function BookPage() {
             thumbnail: `${import.meta.env.VITE_BACKEND_URL}/images/book/${data?.thumbnail}`,
         },
     ];
-    // const images = data.slider.map((item) => {
-    //     return {
-    //         original: `${import.meta.env.VITE_BACKEND_URL}/images/book/${item}`,
+    // data?.slider.map((item) => {
+    //     images.push({
+    //         original: `${import.meta.env.VITE_BACKEND_URL}/images/book/${data?.thumbnail}`,
     //         thumbnail: `${import.meta.env.VITE_BACKEND_URL}/images/book/${item}`,
-    //     };
+    //     });
     // });
+
     const handleUp = () => {
         if (step >= 1 && step < +data.quantity) {
             setStep(step + 1);
@@ -76,8 +77,13 @@ function BookPage() {
         }
     };
     const handleAddCart = () => {
-        dispatch(doAddCart({ quantity: step, _id: data._id, detail: data }));
+        if (authentically === true) {
+            dispatch(doAddCart({ quantity: step, _id: data._id, detail: data }));
+        } else {
+            navigate("/login");
+        }
     };
+
     return (
         <Form>
             <Row>

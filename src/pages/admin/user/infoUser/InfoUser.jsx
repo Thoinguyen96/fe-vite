@@ -12,7 +12,6 @@ const InfoUser = (props) => {
     );
     const [infoAvatar, setInfoAvatar] = useState("");
     const dispatch = useDispatch();
-    console.log(infoUser);
     const onClose = () => {
         setOpen(false);
     };

@@ -138,7 +138,7 @@ function Header() {
                                 )}
                             >
                                 <div>
-                                    <Badge count={cartQuantity > 0 ? cartQuantity : 0} size="small">
+                                    <Badge count={cartQuantity > 0 ? cartQuantity : ""} size="small">
                                         <ShoppingCartOutlined
                                             style={{
                                                 color: "#1677ff",

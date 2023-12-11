@@ -55,19 +55,18 @@ const BookModalCreate = (props) => {
         reader.readAsDataURL(img);
     };
 
-    // const beforeUpload = (file) => {
-    //     console.log(file);
+    const beforeUpload = (file) => {
+        const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/webp";
+        if (!isJpgOrPng) {
+            message.error("You can only upload JPG/PNG file!");
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
 
-    //     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-    //     if (!isJpgOrPng) {
-    //         message.error("You can only upload JPG/PNG file!");
-    //     }
-    //     const isLt2M = file.size / 1024 / 1024 < 2;
-    //     if (!isLt2M) {
-    //         message.error("Image must smaller than 2MB!");
-    //     }
-    //     return isJpgOrPng && isLt2M;
-    // };
+        if (!isLt2M) {
+            message.error("Image must smaller than 2MB!");
+        }
+        return isJpgOrPng && isLt2M;
+    };
 
     const handleChange = (info, type) => {
         // console.log(type);
@@ -245,7 +244,7 @@ const BookModalCreate = (props) => {
                                     maxCount={1}
                                     multiple={false}
                                     customRequest={handleUploadFileThumbnail}
-                                    // beforeUpload={beforeUpload}
+                                    beforeUpload={beforeUpload}
                                     onChange={handleChange}
                                     onRemove={(file) => handleRemoveFile(file, "thumbnail")}
                                     onPreview={handlePreview}
@@ -270,7 +269,7 @@ const BookModalCreate = (props) => {
                                     listType="picture-card"
                                     className="avatar-uploader"
                                     customRequest={handleUploadFileSlider}
-                                    // beforeUpload={beforeUpload}
+                                    beforeUpload={beforeUpload}
                                     onChange={handleChange}
                                     onRemove={(file) => handleRemoveFile(file, "slider")}
                                     onPreview={handlePreview}

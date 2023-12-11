@@ -17,7 +17,6 @@ function Home() {
     const [applyPrice, setApplyPrice] = useState("");
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-
     const showDefaultDrawer = () => {
         setOpen(true);
     };
@@ -142,6 +141,7 @@ function Home() {
             .replace(/-+$/, "");
     }
     const handleViewBook = (data) => {
+        console.log(data);
         const slug = slugify(data.mainText);
         navigate(`book/${slug}?id=${data._id}`);
     };
