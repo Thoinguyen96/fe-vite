@@ -1,6 +1,5 @@
 import { Button, Drawer, Space, Avatar, Upload, Form, Input, InputNumber, Tabs, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { callUploadAvatar, changePassword, uploadAvatar } from "../../../../services/ApiServices";
 import { useDispatch } from "react-redux";
 import { doUpdateUser } from "../../../../redux/account/userSlice";
@@ -10,14 +9,16 @@ const InfoUser = (props) => {
     const [avatar, setAvatar] = useState(
         infoUser?.avatar ? `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${infoUser?.avatar}` : ""
     );
+    const refAvatar = useRef(null);
     const [infoAvatar, setInfoAvatar] = useState("");
+    const [urlAvatar, setUrlAvatar] = useState("");
+
     const dispatch = useDispatch();
     const onClose = () => {
         setOpen(false);
     };
     const [form1] = Form.useForm();
     const [form2] = Form.useForm();
-
     const handleTitle = () => {
         return <h4>Info user</h4>;
     };
@@ -53,41 +54,24 @@ const InfoUser = (props) => {
         console.log("Failed:", errorInfo);
     };
     const onChange = (key) => {
-        console.log(key);
         setKey(key);
     };
     // https://kenh14cdn.com/thumb_w/620/203336854389633024/2023/3/16/photo-2-16789543585031180061171.jpg
-    const propss = {
-        name: "file",
-        maxCount: 1,
-        action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-        headers: {
-            authorization: "authorization-text",
-        },
-        customRequest: (file) => handleAvatar(file),
 
-        onChange(info) {
-            if (info.file.status !== "uploading") {
-                console.log(info.file, info.fileList);
-            }
-            if (info.file.status === "done") {
-                message.success(`${info.file.name} file uploaded successfully`);
-            } else if (info.file.status === "error") {
-                message.error(`${info.file.name} file upload failed.`);
-            }
-        },
+    const handleClickUpload = () => {
+        refAvatar.current.click();
     };
-    const handleAvatar = async (file) => {
-        console.log(file);
-        const res = await callUploadAvatar(file.file);
-        if (res && res.data) {
+    const handleOnchangeAvatar = async (event) => {
+        console.log(event);
+        const url = event.target.files[0];
+
+        setUrlAvatar(URL.createObjectURL(url));
+        const res = await callUploadAvatar(url);
+        if (res && res.data && url) {
             console.log(res);
-            const url = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${res.data.fileUploaded}`;
-            setInfoAvatar({ file: file.file, avatar: res.data.fileUploaded });
-            setAvatar(url);
-        } else {
-            const url = URL.createObjectURL(file.file);
-            setAvatar(url);
+            const urls = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${res.data.fileUploaded}`;
+            setInfoAvatar({ file: event.file, avatar: res.data.fileUploaded });
+            setAvatar(urls);
         }
     };
 
@@ -99,20 +83,37 @@ const InfoUser = (props) => {
                 <>
                     <div className="wrap__view-avatar">
                         <div>
-                            <Space direction="vertical" size={16}>
-                                <Avatar
-                                    size={200}
-                                    icon={
-                                        <img
-                                            className="view__avatar"
-                                            src={`${import.meta.env.VITE_BACKEND_URL}/images/avatar/${infoUser.avatar}`}
-                                        />
-                                    }
-                                />
-                            </Space>
-                            <Upload {...propss}>
-                                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                            </Upload>
+                            {urlAvatar ? (
+                                <Space direction="vertical" size={16}>
+                                    <Avatar
+                                        onClick={handleClickUpload}
+                                        size={200}
+                                        icon={<img className="view__avatar" src={urlAvatar} />}
+                                    />
+                                </Space>
+                            ) : (
+                                <Space direction="vertical" size={16}>
+                                    <Avatar
+                                        onClick={handleClickUpload}
+                                        size={200}
+                                        icon={
+                                            <img
+                                                className="view__avatar"
+                                                src={`${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
+                                                    infoUser.avatar
+                                                }`}
+                                            />
+                                        }
+                                    />
+                                </Space>
+                            )}
+
+                            <input
+                                type="file"
+                                onChange={handleOnchangeAvatar}
+                                ref={refAvatar}
+                                style={{ display: "none" }}
+                            />
                         </div>
                         <Form
                             form={form1}

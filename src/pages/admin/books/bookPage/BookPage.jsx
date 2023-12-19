@@ -19,10 +19,11 @@ function BookPage() {
     const [data, setData] = useState([]);
     const [loadingBook, setLoadingBook] = useState(false);
     let location = useLocation();
-    const id = location.search.slice(4);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const authentically = useSelector((state) => state.account.authentically);
+    var urlParams = new URLSearchParams(location.search);
+    const id = urlParams.get("id");
 
     useEffect(() => {
         fetListBook();
@@ -35,24 +36,27 @@ function BookPage() {
             setData(res.data);
         }
     };
-
+    console.log(data.thumbnail);
     const handlePreviewImageBook = () => {
         setCurrentIndex(refGallery?.current?.getCurrentIndex() ?? 0);
         setIsModalOpen(true);
     };
     const refGallery = useRef(null);
-    const images = [
-        {
-            original: `${import.meta.env.VITE_BACKEND_URL}/images/book/${data?.thumbnail}`,
-            thumbnail: `${import.meta.env.VITE_BACKEND_URL}/images/book/${data?.thumbnail}`,
-        },
-    ];
-    // data?.slider.map((item) => {
-    //     images.push({
-    //         original: `${import.meta.env.VITE_BACKEND_URL}/images/book/${data?.thumbnail}`,
-    //         thumbnail: `${import.meta.env.VITE_BACKEND_URL}/images/book/${item}`,
-    //     });
-    // });
+    let images = [];
+    if (data.thumbnail) {
+        images.push({
+            original: `${import.meta.env.VITE_BACKEND_URL}/images/book/${data.thumbnail}`,
+            thumbnail: `${import.meta.env.VITE_BACKEND_URL}/images/book/${data.thumbnail}`,
+        });
+    }
+    if (data.slider) {
+        data?.slider.map((item) => {
+            images.push({
+                original: `${import.meta.env.VITE_BACKEND_URL}/images/book/${item}`,
+                thumbnail: `${import.meta.env.VITE_BACKEND_URL}/images/book/${item}`,
+            });
+        });
+    }
 
     const handleUp = () => {
         if (step >= 1 && step < +data.quantity) {

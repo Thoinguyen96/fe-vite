@@ -61,6 +61,7 @@ function Books() {
         setOpenInfoBooks(true);
         setDataInfoBooks(record);
     };
+
     const columns = [
         {
             title: "ID",
@@ -91,11 +92,12 @@ function Books() {
         {
             title: "Price",
             dataIndex: "price",
-            sorter: (a, b) => a.price.localeCompare(b.price),
+            sorter: (a, b) => a.price - b.price,
         },
         {
             title: "Date update",
             dataIndex: "updatedAt",
+            defaultSortOrder: "descend",
             sorter: (a, b) => a.updatedAt.localeCompare(b.updatedAt),
         },
         {

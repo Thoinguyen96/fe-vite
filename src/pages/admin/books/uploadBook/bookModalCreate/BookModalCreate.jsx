@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Col, Divider, Form, Input, InputNumber, message, Modal, notification, Row, Select, Upload } from "antd";
+import { Col, Divider, Form, Input, InputNumber, message, Modal, Row, Select, Upload } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { callFetchCategory, callUploadBookImg, createBooks } from "../../../../../services/ApiServices";
 const BookModalCreate = (props) => {
@@ -60,12 +60,12 @@ const BookModalCreate = (props) => {
         if (!isJpgOrPng) {
             message.error("You can only upload JPG/PNG file!");
         }
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        // const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isLt2M) {
-            message.error("Image must smaller than 2MB!");
-        }
-        return isJpgOrPng && isLt2M;
+        // if (!isLt2M) {
+        //     message.error("Image must smaller than 2MB!");
+        // }
+        return isJpgOrPng;
     };
 
     const handleChange = (info, type) => {

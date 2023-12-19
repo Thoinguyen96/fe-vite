@@ -1,12 +1,14 @@
 import axios from "axios";
+const baseURL = `${import.meta.env.VITE_BACKEND_URL}/api/`;
 export const instance = axios.create({
+    baseURL: baseURL,
     withCredentials: true,
-    baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/`,
 });
 
 instance.defaults.headers.common = { Authorization: `Bearer ${localStorage.getItem("access_token")}` };
 const handleRefreshToken = async () => {
     const res = await instance.get("v1/auth/refresh");
+    console.log(res);
     if (res && res.data) return res.data.access_token;
     else null;
 };
@@ -40,6 +42,7 @@ instance.interceptors.response.use(
             // !error.config.headers[NO_RETRY_HEADER]
         ) {
             const access_token = await handleRefreshToken();
+
             // error.config.headers[NO_RETRY_HEADER] = "true";
             if (access_token) {
                 error.config.headers.Authorization = `Bearer ${access_token}`;
@@ -48,14 +51,14 @@ instance.interceptors.response.use(
             }
         }
 
-        // if (
-        //     error.config &&
-        //     error.response &&
-        //     +error.response.status === 400 &&
-        //     error.config.url === "/api/v1/auth/refresh"
-        // ) {
-        //     window.location.href = "/login";
-        // }
+        if (
+            error.config &&
+            error.response &&
+            +error.response.status === 400 &&
+            error.config.url === "v1/auth/refresh"
+        ) {
+            window.location.href = "/login";
+        }
         return error?.response?.data ?? Promise.reject(error);
     }
 );
