@@ -31,12 +31,14 @@ function HeaderAdmin(props) {
         },
     ];
     return (
-        <div className="headerAdmin__wrap">
-            <MenuFoldOutlined onClick={toggleCollapsed} style={{ fontSize: 30, padding: 10 }} />
+        <div className="headerAdmin__wrap ">
+            <div className="hide-on-mobile-tablet-d">
+                <MenuFoldOutlined onClick={toggleCollapsed} style={{ fontSize: 30, padding: 10 }} />
+            </div>
             <Link to={"/"}>
                 <img className="logo__tiki" src={logoTiki} alt="logoTIKI.png" />
             </Link>
-            <div className="wrap__icon-header">
+            <div className="wrap__icon-header hide-on-mobile-tablet-d">
                 <Dropdown arrow={false} menu={{ items }}>
                     <a onClick={(e) => e.preventDefault()}>
                         <Space>

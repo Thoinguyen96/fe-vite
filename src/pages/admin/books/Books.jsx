@@ -40,7 +40,9 @@ function Books() {
             setCurrent(current);
         }
     };
-    const handleEditBook = (data) => {
+    const handleEditBook = (data, e) => {
+        console.log(e);
+        // e.stopPropagation();
         setIsModalEditBook(true);
         setDataEditBook(data);
     };
@@ -64,6 +66,58 @@ function Books() {
 
     const columns = [
         {
+            title: "Book name",
+            dataIndex: "mainText",
+            sorter: (a, b) => a.mainText.localeCompare(b.mainText),
+            ellipsis: true,
+        },
+
+        {
+            title: "Author",
+            dataIndex: "author",
+            sorter: (a, b) => a.author.localeCompare(b.author),
+            ellipsis: true,
+            width: 100,
+        },
+        {
+            title: "Price",
+            dataIndex: "price",
+            sorter: (a, b) => a.price - b.price,
+            ellipsis: true,
+            width: 80,
+        },
+
+        {
+            title: "Action",
+            render: function (text, record) {
+                return (
+                    <div style={{ display: "flex", gap: 30 }}>
+                        <EditOutlined
+                            onClick={() => handleEditBook(record)}
+                            style={{ color: "orange", cursor: "pointer", float: "left", padding: 8 }}
+                        />
+                        <Popconfirm
+                            style={{ padding: 8 }}
+                            title="Delete the task"
+                            description="Are you sure to delete this task?"
+                            cancelText="No"
+                            okText="Yes"
+                            onConfirm={() => handleDelete(record._id)}
+                            placement="topLeft"
+                        >
+                            <div style={{ display: "flex", gap: 30 }}>
+                                <DeleteOutlined style={{ color: "red", cursor: "pointer", padding: 15 }} />
+                            </div>
+                        </Popconfirm>
+                    </div>
+                );
+            },
+            width: 80,
+        },
+    ];
+
+    const columnsPc = [
+        {
             title: "ID",
             dataIndex: "_id",
             render: (text, record) => {
@@ -73,6 +127,7 @@ function Books() {
                     </a>
                 );
             },
+            ellipsis: true,
         },
         {
             title: "Book name",
@@ -83,22 +138,27 @@ function Books() {
             title: "Category",
             dataIndex: "category",
             sorter: (a, b) => a.category.localeCompare(b.category),
+            ellipsis: true,
         },
         {
             title: "Author",
             dataIndex: "author",
             sorter: (a, b) => a.author.localeCompare(b.author),
+            ellipsis: true,
+            width: 100,
         },
         {
             title: "Price",
             dataIndex: "price",
             sorter: (a, b) => a.price - b.price,
+            ellipsis: true,
         },
         {
             title: "Date update",
             dataIndex: "updatedAt",
             defaultSortOrder: "descend",
             sorter: (a, b) => a.updatedAt.localeCompare(b.updatedAt),
+            ellipsis: true,
         },
         {
             title: "Action",
@@ -211,10 +271,22 @@ function Books() {
             <Table
                 title={handleHeader}
                 rowKey="_id"
-                columns={columns}
+                columns={document.body.offsetWidth <= 1023 ? columns : columnsPc}
                 dataSource={data}
                 onChange={onChange}
+                rowClassName={() => "rowTable"}
+                onRow={(record) => {
+                    return {
+                        onClick: () => {
+                            handleInfoBooks(record);
+                        },
+                        onMouseEnter: () => {
+                            return <div>{record.mainText}</div>;
+                        }, // mouse enter row
+                    };
+                }}
                 pagination={{
+                    position: ["bottomCenter"],
                     pageSize: pageSize,
                     total: page,
                     showSizeChanger: true,
@@ -243,15 +315,14 @@ function Books() {
                     />
                     {dataInfoBooks.slider &&
                         dataInfoBooks.slider.length > 0 &&
-                        dataInfoBooks.slider.map((image) => {
-                            console.log(image);
+                        dataInfoBooks.slider.map((image, index) => {
                             return (
-                                <>
+                                <div key={index}>
                                     <Image
                                         width={150}
                                         src={`${import.meta.env.VITE_BACKEND_URL}/images/book/` + image}
                                     />
-                                </>
+                                </div>
                             );
                         })}
                 </div>

@@ -4,6 +4,7 @@ import Navbar from "../../pages/navbar/Navbar";
 import { useState } from "react";
 import Footer from "../../pages/footer/Footer";
 import { useSelector } from "react-redux";
+import MenuBottom from "../../pages/headerAdmin/menuBottom/MenuBottom";
 // import Login from "../../pages/login/Login";
 
 function LayoutAdmin() {
@@ -15,12 +16,17 @@ function LayoutAdmin() {
     // if (roleUser === "ADMIN") {
     return (
         <div className="wrap__LayoutAdmin">
-            <Navbar collapsed={collapsed} setCollapsed={setCollapsed} />
+            <div className="hide-on-mobile-tablet-d">
+                <Navbar collapsed={collapsed} setCollapsed={setCollapsed} />
+            </div>
 
             <div className="wrap__admin-content">
                 <HeaderAdmin toggleCollapsed={toggleCollapsed} />
                 <Outlet />
                 <Footer />
+                <div className="menu__bottom hide-on-pc-d">
+                    <MenuBottom />
+                </div>
             </div>
         </div>
     );
