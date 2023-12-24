@@ -43,3 +43,15 @@
     gap: 30px;
     justify-content: end;
 }
+.menu-bottom__wrap {
+    width: 100%;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .menu-bottom__style {
+        display: flex;
+        gap: 5px;
+        color: black;
+    }
+}

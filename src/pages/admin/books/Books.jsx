@@ -91,7 +91,7 @@ function Books() {
             title: "Action",
             render: function (text, record) {
                 return (
-                    <div style={{ display: "flex", gap: 30 }}>
+                    <div style={{ display: "flex" }}>
                         <EditOutlined
                             onClick={() => handleEditBook(record)}
                             style={{ color: "orange", cursor: "pointer", float: "left", padding: 8 }}
