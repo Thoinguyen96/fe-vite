@@ -45,13 +45,18 @@
 }
 .menu-bottom__wrap {
     width: 100%;
-    padding: 0 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     .menu-bottom__style {
+        height: 100%;
+        width: 100%;
+        border: 1px solid var(--border);
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
         display: flex;
         gap: 5px;
-        color: black;
+        color: green;
     }
 }
