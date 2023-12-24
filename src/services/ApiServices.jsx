@@ -9,7 +9,7 @@ export const callCountUser = () => {
     return instance.get("v1/auth/account");
 };
 export const callLogout = () => {
-    return instance.post("/v1/auth/logout");
+    return instance.post("v1/auth/logout");
 };
 export const getPaginateUser = (query) => {
     return instance.get(`v1/user?${query}`);
