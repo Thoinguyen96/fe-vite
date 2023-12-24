@@ -206,7 +206,7 @@ function Books() {
 
     const handleHeader = () => {
         return (
-            <div style={{ display: "flex", gap: 30, justifyContent: "end" }}>
+            <div style={{ display: "flex", gap: 30, justifyContent: "center" }}>
                 <Button onClick={() => setIsModalUploadBook(true)} type="primary">
                     <UploadOutlined />
                     Create book

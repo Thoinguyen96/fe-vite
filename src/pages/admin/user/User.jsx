@@ -5,7 +5,7 @@ import { DeleteOutlined, EditOutlined, UserAddOutlined, UploadOutlined, ExportOu
 import ModalCreateUser from "./modalCreateUser/ModalCreateUser";
 import ModalUpload from "./modalUpload/ModalUpload";
 import * as XLSX from "xlsx/xlsx.mjs";
-import { Button, Input, Modal, message, Table, Popconfirm } from "antd";
+import { Button, Input, Modal, message, Table, Popconfirm, Drawer, Space, Descriptions, Image } from "antd";
 
 function User() {
     const [dataUser, setDataUser] = useState([]);
@@ -24,6 +24,8 @@ function User() {
     const [sortQueryEmail, setSortQueryEmail] = useState("");
     const [sortQueryName, setSortQueryName] = useState("");
     const [sortQueryPhone, setSortQueryPhone] = useState("");
+    const [openInfoUser, setOpenInfoUser] = useState(false);
+    const [dataInfoUser, setDataInfoUser] = useState([]);
 
     useEffect(() => {
         fetchPaginateUser();
@@ -55,7 +57,6 @@ function User() {
     };
     const handleDelete = async (id) => {
         const res = await deleteUser(id);
-        console.log();
         if (res.statusCode === 200) {
             fetchPaginateUser();
             message.success({
@@ -88,8 +89,78 @@ function User() {
     const handleCancel = () => {
         setIsModalEdit(false);
     };
-
     const columns = [
+        {
+            title: "Full Name",
+            dataIndex: "fullName",
+            sorter: (a, b) => a.fullName.localeCompare(b.fullName),
+            ellipsis: true,
+        },
+        {
+            title: "Email",
+            dataIndex: "email",
+            sorter: (a, b) => a.email.localeCompare(b.email),
+            ellipsis: true,
+        },
+        {
+            title: "Phone",
+            dataIndex: "phone",
+            sorter: (a, b) => a.phone.localeCompare(b.phone),
+            ellipsis: true,
+        },
+        {
+            title: "Action",
+            render: function (text, record) {
+                return (
+                    <div style={{ display: "flex", gap: 30 }}>
+                        <EditOutlined onClick={() => handleEdit(record)} style={{ color: "red", cursor: "pointer" }} />
+                        <Popconfirm
+                            title="Delete the task"
+                            description="Are you sure to delete this task?"
+                            cancelText="No"
+                            okText="Yes"
+                            onConfirm={() => handleDelete(record._id)}
+                            placement="topLeft"
+                        >
+                            <div style={{ display: "flex", gap: 30 }}>
+                                <DeleteOutlined style={{ color: "orange", cursor: "pointer" }} />
+                            </div>
+                        </Popconfirm>
+                    </div>
+                );
+            },
+        },
+    ];
+    const items = [
+        {
+            key: "1",
+            label: "Email",
+            children: dataInfoUser.email,
+        },
+        {
+            key: "2",
+            label: "full Name",
+            children: dataInfoUser.fullName,
+        },
+        {
+            key: "3",
+            label: "ID",
+            children: dataInfoUser._id,
+        },
+
+        {
+            key: "4",
+            label: "phone",
+            span: 2,
+            children: dataInfoUser.phone,
+        },
+        {
+            key: "5",
+            label: "Date",
+            children: dataInfoUser.updatedAt,
+        },
+    ];
+    const columnsPc = [
         {
             title: "ID",
             dataIndex: "_id",
@@ -159,7 +230,7 @@ function User() {
 
     const handleHeader = () => {
         return (
-            <div style={{ display: "flex", gap: 30, justifyContent: "end" }}>
+            <div style={{ display: "flex", gap: 30, justifyContent: "center" }}>
                 <Button onClick={showModalCreateUser} type="primary">
                     <UserAddOutlined />
                     Create user
@@ -175,7 +246,14 @@ function User() {
             </div>
         );
     };
-
+    const handleInfoUser = (record) => {
+        console.log(record);
+        setOpenInfoUser(true);
+        setDataInfoUser(record);
+    };
+    const onClose = () => {
+        setOpenInfoUser(false);
+    };
     return (
         <div className="user__wrap">
             <form className="user__input">
@@ -197,10 +275,22 @@ function User() {
             <Table
                 title={() => handleHeader()}
                 rowKey="_id"
-                columns={columns}
+                columns={document.body.offsetWidth <= 1023 ? columns : columnsPc}
                 dataSource={dataUser}
                 onChange={onChange}
+                onRow={(record) => {
+                    console.log(record);
+                    return {
+                        onClick: () => {
+                            handleInfoUser(record);
+                        },
+                        onMouseEnter: () => {
+                            return <div>{record.mainText}</div>;
+                        }, // mouse enter row
+                    };
+                }}
                 pagination={{
+                    position: ["bottomCenter"],
                     pageSize: pageSize,
                     total: totalPage,
                     current: current,
@@ -208,6 +298,48 @@ function User() {
                     pageSizeOptions: [5, 10, 20, 40, 60, 80, 100],
                 }}
             />
+            <Drawer
+                title="Info Books"
+                placement="right"
+                width="736"
+                onClose={onClose}
+                open={openInfoUser}
+                extra={
+                    <Space>
+                        <Button onClick={onClose}>Cancel</Button>
+                        <Button type="primary" onClick={onClose}>
+                            OK
+                        </Button>
+                    </Space>
+                }
+            >
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                    }}
+                >
+                    <img
+                        style={{
+                            display: "flex",
+                            width: 150,
+                            height: 150,
+                            borderRadius: "50%",
+                            justifyContent: "center",
+                            objectFit: "cover",
+                        }}
+                        src={`${import.meta.env.VITE_BACKEND_URL}/images/avatar/` + dataInfoUser.avatar}
+                        alt="user"
+                    />
+                </div>
+                <br />
+                <br />
+                <Descriptions bordered layout="vertical" items={items} />
+                <br />
+                <div className="wrap_action">
+                    <Button type="primary">Update</Button>
+                </div>
+            </Drawer>
             <InfoUser open={open} setOpen={setOpen} infoUser={infoUser} setInfoUser={setInfoUser} />
             <ModalCreateUser
                 isModalCreateOpen={isModalCreateOpen}
