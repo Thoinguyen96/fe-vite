@@ -296,7 +296,7 @@ function Books() {
             <Drawer
                 title="Info Books"
                 placement="right"
-                width="736"
+                width={"90%"}
                 onClose={onClose}
                 open={openInfoBooks}
                 extra={

@@ -58,6 +58,7 @@ instance.interceptors.response.use(
             error.config.url === "v1/auth/refresh"
         ) {
             window.location.href = "/login";
+            console.log("thaafn");
         }
 
         return error?.response?.data ?? Promise.reject(error);

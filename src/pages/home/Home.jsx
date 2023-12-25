@@ -141,7 +141,6 @@ function Home() {
             .replace(/-+$/, "");
     }
     const handleViewBook = (data) => {
-        console.log(data);
         const slug = slugify(data.mainText);
         navigate(`book/${slug}?id=${data._id}`);
     };

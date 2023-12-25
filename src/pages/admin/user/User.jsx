@@ -279,7 +279,6 @@ function User() {
                 dataSource={dataUser}
                 onChange={onChange}
                 onRow={(record) => {
-                    console.log(record);
                     return {
                         onClick: () => {
                             handleInfoUser(record);
