@@ -94,19 +94,21 @@ function Books() {
                             onClick={(e) => handleEditBook(record, e)}
                             style={{ color: "orange", cursor: "pointer", float: "left", padding: 8 }}
                         />
-                        <Popconfirm
-                            style={{ padding: 8 }}
-                            title="Delete the task"
-                            description="Are you sure to delete this task?"
-                            cancelText="No"
-                            okText="Yes"
-                            onConfirm={() => handleDelete(record._id)}
-                            placement="topLeft"
-                        >
-                            <div style={{ display: "flex", gap: 30 }}>
-                                <DeleteOutlined style={{ color: "red", cursor: "pointer", padding: 15 }} />
-                            </div>
-                        </Popconfirm>
+                        <div onClick={(e) => e.stopPropagation()}>
+                            <Popconfirm
+                                style={{ padding: 8 }}
+                                title="Delete the task"
+                                description="Are you sure to delete this task?"
+                                cancelText="No"
+                                okText="Yes"
+                                onConfirm={() => handleDelete(record._id)}
+                                placement="topLeft"
+                            >
+                                <div style={{ display: "flex", gap: 30 }}>
+                                    <DeleteOutlined style={{ color: "red", cursor: "pointer", padding: 15 }} />
+                                </div>
+                            </Popconfirm>
+                        </div>
                     </div>
                 );
             },
@@ -167,18 +169,20 @@ function Books() {
                             onClick={(e) => handleEditBook(record, e)}
                             style={{ color: "orange", cursor: "pointer", float: "left" }}
                         />
-                        <Popconfirm
-                            title="Delete the task"
-                            description="Are you sure to delete this task?"
-                            cancelText="No"
-                            okText="Yes"
-                            onConfirm={() => handleDelete(record._id)}
-                            placement="topLeft"
-                        >
-                            <div style={{ display: "flex", gap: 30 }}>
-                                <DeleteOutlined style={{ color: "red", cursor: "pointer" }} />
-                            </div>
-                        </Popconfirm>
+                        <div onClick={(e) => e.stopPropagation()}>
+                            <Popconfirm
+                                title="Delete the task"
+                                description="Are you sure to delete this task?"
+                                cancelText="No"
+                                okText="Yes"
+                                onConfirm={() => handleDelete(record._id)}
+                                placement="topLeft"
+                            >
+                                <div style={{ display: "flex", gap: 30 }}>
+                                    <DeleteOutlined style={{ color: "red", cursor: "pointer" }} />
+                                </div>
+                            </Popconfirm>
+                        </div>
                     </div>
                 );
             },
@@ -239,7 +243,6 @@ function Books() {
         {
             key: "4",
             label: "price",
-            span: 2,
             children: dataInfoBooks.price,
         },
         {
