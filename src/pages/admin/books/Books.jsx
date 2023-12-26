@@ -41,8 +41,7 @@ function Books() {
         }
     };
     const handleEditBook = (data, e) => {
-        console.log(e);
-        // e.stopPropagation();
+        e.stopPropagation();
         setIsModalEditBook(true);
         setDataEditBook(data);
     };
@@ -58,8 +57,7 @@ function Books() {
             message.error(res.message);
         }
     };
-    const handleInfoBooks = (record) => {
-        console.log(record);
+    const handleInfoBooks = (record, e) => {
         setOpenInfoBooks(true);
         setDataInfoBooks(record);
     };
@@ -93,7 +91,7 @@ function Books() {
                 return (
                     <div style={{ display: "flex" }}>
                         <EditOutlined
-                            onClick={() => handleEditBook(record)}
+                            onClick={(e) => handleEditBook(record, e)}
                             style={{ color: "orange", cursor: "pointer", float: "left", padding: 8 }}
                         />
                         <Popconfirm
@@ -122,7 +120,7 @@ function Books() {
             dataIndex: "_id",
             render: (text, record) => {
                 return (
-                    <a onClick={() => handleInfoBooks(record)} href="#!">
+                    <a onClick={(e) => handleInfoBooks(record, e)} href="#!">
                         {record._id}
                     </a>
                 );
@@ -166,7 +164,7 @@ function Books() {
                 return (
                     <div style={{ display: "flex", gap: 30 }}>
                         <EditOutlined
-                            onClick={() => handleEditBook(record)}
+                            onClick={(e) => handleEditBook(record, e)}
                             style={{ color: "orange", cursor: "pointer", float: "left" }}
                         />
                         <Popconfirm
@@ -277,8 +275,8 @@ function Books() {
                 rowClassName={() => "rowTable"}
                 onRow={(record) => {
                     return {
-                        onClick: () => {
-                            handleInfoBooks(record);
+                        onClick: (e) => {
+                            handleInfoBooks(record, e);
                         },
                         onMouseEnter: () => {
                             return <div>{record.mainText}</div>;
