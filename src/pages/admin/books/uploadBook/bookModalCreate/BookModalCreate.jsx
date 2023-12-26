@@ -154,7 +154,7 @@ const BookModalCreate = (props) => {
                 okText={"Tạo mới"}
                 cancelText={"Hủy"}
                 confirmLoading={isSubmit}
-                width={"50vw"}
+                width={"90%"}
                 //do not close when click fetchBook
                 maskClosable={false}
             >
