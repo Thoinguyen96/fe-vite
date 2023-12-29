@@ -13,14 +13,16 @@ function ModalBookPage(props) {
     return (
         <>
             <Modal
-                width={1000}
-                title="Basic Modal"
+                width={"90%"}
+                title="Image books"
                 open={isModalOpen}
                 slideDuration={0}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
                 <ImageGallery
+                    bulletClass="ImageGallery-width"
+                    // originalWidth={"50%"}
                     startIndex={currentIndex}
                     thumbnailPosition="right"
                     showFullscreenButton={false}

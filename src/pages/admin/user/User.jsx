@@ -112,7 +112,7 @@ function User() {
             title: "Action",
             render: function (text, record) {
                 return (
-                    <div style={{ display: "flex", gap: 30 }}>
+                    <div onClick={(e) => e.stopPropagation()} style={{ display: "flex", gap: 30 }}>
                         <EditOutlined onClick={() => handleEdit(record)} style={{ color: "red", cursor: "pointer" }} />
                         <Popconfirm
                             title="Delete the task"
@@ -191,7 +191,7 @@ function User() {
             title: "Action",
             render: function (text, record) {
                 return (
-                    <div style={{ display: "flex", gap: 30 }}>
+                    <div onClick={(e) => e.stopPropagation()} style={{ display: "flex", gap: 30 }}>
                         <EditOutlined onClick={() => handleEdit(record)} style={{ color: "red", cursor: "pointer" }} />
                         <Popconfirm
                             title="Delete the task"
@@ -259,6 +259,7 @@ function User() {
             <form className="user__input">
                 <div className="width_input">
                     <span>Name</span>
+
                     <Input onChange={(e) => setSortQueryName(e.target.value)} placeholder="Name..." />
                 </div>
 

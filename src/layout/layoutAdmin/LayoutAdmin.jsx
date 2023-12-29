@@ -5,8 +5,7 @@ import { useState } from "react";
 import Footer from "../../pages/footer/Footer";
 import { useSelector } from "react-redux";
 import MenuBottom from "../../pages/headerAdmin/menuBottom/MenuBottom";
-// import Login from "../../pages/login/Login";
-
+import { FloatButton } from "antd";
 function LayoutAdmin() {
     const [collapsed, setCollapsed] = useState(false);
     // const roleUser = useSelector((state) => state.account.user["role"]);
@@ -27,6 +26,7 @@ function LayoutAdmin() {
                 <div className="menu__bottom hide-on-pc-d">
                     <MenuBottom />
                 </div>
+                <FloatButton.BackTop />
             </div>
         </div>
     );

@@ -40,8 +40,7 @@ function Books() {
             setCurrent(current);
         }
     };
-    const handleEditBook = (data, e) => {
-        e.stopPropagation();
+    const handleEditBook = (data) => {
         setIsModalEditBook(true);
         setDataEditBook(data);
     };
@@ -89,26 +88,24 @@ function Books() {
             title: "Action",
             render: function (text, record) {
                 return (
-                    <div style={{ display: "flex" }}>
+                    <div onClick={(e) => e.stopPropagation()} style={{ display: "flex" }}>
                         <EditOutlined
                             onClick={(e) => handleEditBook(record, e)}
                             style={{ color: "orange", cursor: "pointer", float: "left", padding: 8 }}
                         />
-                        <div onClick={(e) => e.stopPropagation()}>
-                            <Popconfirm
-                                style={{ padding: 8 }}
-                                title="Delete the task"
-                                description="Are you sure to delete this task?"
-                                cancelText="No"
-                                okText="Yes"
-                                onConfirm={() => handleDelete(record._id)}
-                                placement="topLeft"
-                            >
-                                <div style={{ display: "flex", gap: 30 }}>
-                                    <DeleteOutlined style={{ color: "red", cursor: "pointer", padding: 15 }} />
-                                </div>
-                            </Popconfirm>
-                        </div>
+                        <Popconfirm
+                            style={{ padding: 8 }}
+                            title="Delete the task"
+                            description="Are you sure to delete this task?"
+                            cancelText="No"
+                            okText="Yes"
+                            onConfirm={() => handleDelete(record._id)}
+                            placement="topLeft"
+                        >
+                            <div style={{ display: "flex", gap: 30 }}>
+                                <DeleteOutlined style={{ color: "red", cursor: "pointer", padding: 15 }} />
+                            </div>
+                        </Popconfirm>
                     </div>
                 );
             },
@@ -164,12 +161,12 @@ function Books() {
             title: "Action",
             render: function (text, record) {
                 return (
-                    <div style={{ display: "flex", gap: 30 }}>
+                    <div onClick={(e) => e.stopPropagation()} style={{ display: "flex", gap: 30 }}>
                         <EditOutlined
-                            onClick={(e) => handleEditBook(record, e)}
+                            onClick={() => handleEditBook(record)}
                             style={{ color: "orange", cursor: "pointer", float: "left" }}
                         />
-                        <div onClick={(e) => e.stopPropagation()}>
+                        <div>
                             <Popconfirm
                                 title="Delete the task"
                                 description="Are you sure to delete this task?"
