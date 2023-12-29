@@ -230,7 +230,7 @@ function User() {
 
     const handleHeader = () => {
         return (
-            <div style={{ display: "flex", gap: 30, justifyContent: "center" }}>
+            <div style={{ display: "flex", gap: 5, justifyContent: "center" }}>
                 <Button onClick={showModalCreateUser} type="primary">
                     <UserAddOutlined />
                     Create user
