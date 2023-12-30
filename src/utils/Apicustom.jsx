@@ -22,7 +22,7 @@ instance.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-
+const NO_RETRY_HEADER = "x-no-retry";
 // Add a response interceptor
 instance.interceptors.response.use(
     function (response) {
@@ -38,12 +38,12 @@ instance.interceptors.response.use(
         if (
             error.config &&
             error.response &&
-            +error.response.status === 401
-            // !error.config.headers[NO_RETRY_HEADER]
+            +error.response.status === 401 &&
+            !error.config.headers[NO_RETRY_HEADER]
         ) {
             const access_token = await handleRefreshToken();
 
-            // error.config.headers[NO_RETRY_HEADER] = "true";
+            error.config.headers[NO_RETRY_HEADER] = "true";
             if (access_token) {
                 error.config.headers.Authorization = `Bearer ${access_token}`;
                 localStorage.setItem("access_token", access_token);
@@ -58,7 +58,6 @@ instance.interceptors.response.use(
             error.config.url === "v1/auth/refresh"
         ) {
             window.location.href = "/login";
-            console.log("thaafn");
         }
 
         return error?.response?.data ?? Promise.reject(error);

@@ -15,6 +15,7 @@ function Login() {
         const res = await postLogin(username, password, 2000);
         setSubmit(false);
         if (res?.data) {
+            console.log(res);
             localStorage.setItem("access_token", res.data.access_token);
             disPath(doAccountLogin(res.data.user));
             navigate("/");
